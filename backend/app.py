@@ -1,11 +1,9 @@
 from flask import Flask
 from config import LocalDevelopmentConfig
-from dotenv import load_dotenv
 
 def create_app():
     app = Flask(__name__)
-    # load env varaible from the .env
-    load_dotenv() 
+    # load env varaible from the .env from the config 
     #config
     app.config.from_object(LocalDevelopmentConfig)
     #connection for flask with flask_sqlalchemy
@@ -15,11 +13,11 @@ def create_app():
     #flask security stuf
     from flask_security import SQLAlchemyUserDatastore
     from extensions import security
-    datastore = SQLAlchemyUserDatastore(db, Role, User)
-    security.init_app(app, datastore = datastore, register_blueprint = False)  # we dont go into the blueprint, we run the app through the apis
+    datastore = SQLAlchemyUserDatastore(db, User, Role)
+    security.init_app(app, datastore = datastore, register_blueprint = True)  # true for the working of the flask security login page. we dont go into the blueprint, we run the app through the apis
 
     app.datastore = datastore
-
+    # for trial 
     with app.app_context():
         db.create_all()
     return app

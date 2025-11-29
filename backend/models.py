@@ -1,3 +1,4 @@
+import uuid
 from extensions import db
 from datetime import datetime, timezone
 from flask_security.core import UserMixin, RoleMixin
@@ -19,7 +20,7 @@ class User(BaseModel, UserMixin):  #user model is child to db model
     password = db.Column(db.String, nullable = False)
 
     # for flask-security-too
-    fs_uniquifer = db.Column(db.String, unique = True, nullable = False) # for remember me, tokens dont break even if user chnges the pass or roles it
+    fs_uniquifier = db.Column(db.String, unique = True, nullable = False, default=lambda: str(uuid.uuid4())) # for remember me, tokens dont break even if user chnges the pass or roles it
     active = db.Column(db.Boolean, default = True) # if active then only he or sshe can login
 
     #role mapping , fs
