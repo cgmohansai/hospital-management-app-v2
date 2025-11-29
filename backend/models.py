@@ -1,6 +1,6 @@
 from extensions import db
 from datetime import datetime, timezone
-from flask_security import UserMixin, RoleMixin
+from flask_security.core import UserMixin, RoleMixin
 
 class BaseModel(db.Model): #common things everywhere, inheritance rather than creating
     __abstract__ = True #stop from creating the table
