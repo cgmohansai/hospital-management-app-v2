@@ -119,3 +119,11 @@ class DoctorAvailability(BaseModel):
     slot_duration_minutes = db.Column(db.Integer, default=30, nullable=False)
 
     doctor = db.Relationship('Doctor', back_populates='availability_slots')
+
+class Request(BaseModel):
+    __tablename__ = "requests"
+
+    data = db.Column(db.JSON, nullable=False)
+    status = db.Column(db.String, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)

@@ -16,8 +16,8 @@ def login():
 
     data = request.get_json()
 
-    username_or_email = data["username"] or data.get("email") # cuz it was mentioned in the doc, user can use both 
-    password = data["password"]
+    username_or_email = data.get("username") or data.get("email") # cuz it was mentioned in the doc, user can use both 
+    password = data.get("password")
 
     if (not username_or_email or not password):
         return jsonify({"message": "Invalid input"}), 400

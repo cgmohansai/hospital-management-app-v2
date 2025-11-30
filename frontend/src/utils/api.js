@@ -1,59 +1,41 @@
-// API service for making HTTP requests
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+import axios from 'axios';
 
-export const api = {
-  async request(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      ...options,
-    };
-
-    if (config.body && typeof config.body === 'object') {
-      config.body = JSON.stringify(config.body);
+const api = axios.create({
+    baseURL: 'http://localhost:5000/api', // Adjust if backend runs on different port
+    headers: {
+        'Content-Type': 'application/json'
     }
+});
 
-    try {
-      const response = await fetch(url, config);
-      
-      let data;
-      try {
-        data = await response.json();
-      } catch (e) {
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status} ${response.statusText}`);
+// Add a request interceptor to inject the token
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = token;
         }
-        data = {};
-      }
-      
-      if (!response.ok) {
-        throw new Error(data.message || `Error: ${response.status} ${response.statusText}`);
-      }
-      
-      return { data, status: response.status };
-    } catch (error) {
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new Error('Network error. Please check if the server is running.');
-      }
-      throw error;
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-  },
+);
 
-  async login(username, password) {
-    return this.request('/auth/login', {
-      method: 'POST',
-      body: { username, password },
-    });
-  },
+// Add a response interceptor to handle auth errors
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            // Auto logout on unauthorized
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            // Redirect to login if not already there
+            if (!window.location.pathname.includes('/login')) {
+                window.location.href = '/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
 
-  async register(userData) {
-    return this.request('/auth/register', {
-      method: 'POST',
-      body: userData,
-    });
-  },
-};
-
+export default api;

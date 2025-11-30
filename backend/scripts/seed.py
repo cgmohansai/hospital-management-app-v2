@@ -70,6 +70,12 @@ def seed():
     admin_role = get_or_create_role("admin", "Full access")
     doctor_role = get_or_create_role("doctor", "Registered medical professional")
     patient_role = get_or_create_role("patient", "Registered patient")
+    
+    # Cleanup manager role
+    manager_role = Role.query.filter_by(name="manager").first()
+    if manager_role:
+        db.session.delete(manager_role)
+        db.session.commit()
 
     # --- ADMIN USER ---
     create_user(
@@ -83,16 +89,36 @@ def seed():
     # --- DEPARTMENTS ---
     dept_names = [
         "Cardiology",
-        "Neurology",
         "Orthopedics",
+        "Gastroenterology",
+        "Oncology",
+        "Gynecology",
         "Pediatrics",
-        "General Medicine",
+        "KidneyTransplantation",
+        "Liver Transplantation",
+        "Pancreas Transplantation",
+        "Urology",
+        "Rheumatology",
+        "Vascular Surgery",
+        "Neurology",
+        "Ophthalmology",
+        "Dermatology",
+        "Endocrinology",
+        "Interventional Radiology",
+        "Nephrology",
+        "Organ Transplantation",
+        "Robotic Surgery",
+        "General Medicine"
     ]
     departments = []
     for name in dept_names:
         dept = Department.query.filter_by(name=name).first()
         if not dept:
-            dept = Department(name=name, description=f"{name} Department")
+            description = f"{name} Department"
+            if name == "General Medicine":
+                description = "Comprehensive medical care for adults, covering diagnosis, treatment, and prevention of disease."
+            
+            dept = Department(name=name, description=description)
             db.session.add(dept)
         departments.append(dept)
     db.session.commit()
@@ -112,18 +138,20 @@ def seed():
             roles=[doctor_role],
         )
 
-        specialization = random.choice(
-            ["Cardiologist", "Neurologist", "Orthopedic", "Pediatrician", "Physician"]
-        )
+        doctor = Doctor.query.filter_by(user_id=user.id).first()
+        if not doctor:
+            specialization = random.choice(
+                ["Cardiologist", "Neurologist", "Orthopedic", "Pediatrician", "Physician"]
+            )
 
-        doctor = Doctor(
-            user_id=user.id,
-            specialization=specialization,
-            bio=fake.text(180),
-            is_active=True,
-            department=random.choice(departments),
-        )
-        db.session.add(doctor)
+            doctor = Doctor(
+                user_id=user.id,
+                specialization=specialization,
+                bio=fake.text(180),
+                is_active=True,
+                department=random.choice(departments),
+            )
+            db.session.add(doctor)
         doctors.append(doctor)
 
     db.session.commit()
@@ -143,15 +171,17 @@ def seed():
             roles=[patient_role],
         )
 
-        patient = Patient(
-            user_id=user.id,
-            dob=fake.date_between(start_date="-70y", end_date="-18y"),
-            gender=random.choice(["Male", "Female", "Other"]),
-            phone=fake.numerify(text="##########"),
-            address=fake.address().replace("\n", ", "),
-        )
+        patient = Patient.query.filter_by(user_id=user.id).first()
+        if not patient:
+            patient = Patient(
+                user_id=user.id,
+                dob=fake.date_between(start_date="-70y", end_date="-18y"),
+                gender=random.choice(["Male", "Female", "Other"]),
+                phone=fake.numerify(text="##########"),
+                address=fake.address().replace("\n", ", "),
+            )
 
-        db.session.add(patient)
+            db.session.add(patient)
         patients.append(patient)
 
     db.session.commit()

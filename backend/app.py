@@ -1,9 +1,11 @@
 from flask import Flask
+from flask_cors import CORS
 from config import LocalDevelopmentConfig
-from resources import auth_bp, api_bp, api   #simply resources, imports from init file in resources
+from resources import auth_bp, api_bp, api
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     # load env varaible from the .env from the config 
     #config
     app.config.from_object(LocalDevelopmentConfig)
@@ -15,15 +17,14 @@ def create_app():
     from flask_security import SQLAlchemyUserDatastore
     from extensions import security
     datastore = SQLAlchemyUserDatastore(db, User, Role)
-    security.init_app(app, datastore = datastore, register_blueprint = True)  # true for the working of the flask security login page. we dont go into the blueprint, we run the app through the apis
+    security.init_app(app, datastore = datastore, register_blueprint = True)
 
     app.datastore = datastore
 
     # blueprints
     app.register_blueprint(auth_bp)
     app.register_blueprint(api_bp)
-    # api.init_app(app)
-    # for trial 
+    
     with app.app_context():
         db.create_all()
     return app

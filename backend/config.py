@@ -13,6 +13,10 @@ class LocalDevelopmentConfig(BaseConfig):
     SECURITY_PASSWORD_SALT = os.environ.get("SECURITY_PASSWORD_SALT")
 
     SECURITY_PASSWORD_HASH = "argon2"
+    # Token authentication settings
+    SECURITY_TOKEN_AUTHENTICATION_HEADER = "Authorization"
+    SECURITY_TOKEN_AUTHENTICATION_KEY = "auth_token"
+    SECURITY_TOKEN_AUTHENTICATION_REALM = "Authentication Required"
 
 class ProductionConfig(BaseConfig):
     DEBUG = False
