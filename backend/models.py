@@ -15,6 +15,7 @@ class BaseModel(db.Model): #common things everywhere, inheritance rather than cr
 class User(BaseModel, UserMixin):  #user model is child to db model
     __tablename__ = "users"
 
+    username = db.Column(db.String, nullable = False, unique = True)
     name = db.Column(db.String, nullable = False)
     email = db.Column(db.String, nullable = False, unique = True)
     password = db.Column(db.String, nullable = False)
@@ -75,7 +76,7 @@ class Patient(BaseModel):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), unique = True, nullable = False)
     dob = db.Column(db.Date)
     gender = db.Column(db.String)
-    phone = db.Column(db.String)
+    phone = db.Column(db.String, nullable = False)
     address = db.Column(db.String)
 
     user = db.Relationship('User', back_populates='patient_profile')
@@ -85,7 +86,6 @@ class Doctor(BaseModel):
     __tablename__ = "doctors"
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), unique = True, nullable = False)
-    full_name = db.Column(db.String, nullable=False)
     specialization = db.Column(db.String, nullable=False)
     bio = db.Column(db.Text)
     is_active = db.Column(db.Boolean, default=True, nullable=False)

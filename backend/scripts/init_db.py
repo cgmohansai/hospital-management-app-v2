@@ -18,6 +18,7 @@ with app.app_context():
 
     if not datastore.find_user(email = "admin@study"):
         datastore.create_user(
+            username = "admin01",
             email = "admin@study",
             name = "Admin_01", 
             password = hash_password("pass")
@@ -26,6 +27,7 @@ with app.app_context():
     
     if not datastore.find_user(email = "doctor@study"):
         datastore.create_user(
+            username = "doctor01",
             email = "doctor@study",
             name = "doctor_01",
             password = hash_password("pass")
@@ -33,6 +35,7 @@ with app.app_context():
 
     if not datastore.find_user(email = "patient@study"):
         datastore.create_user(
+            username = "patient01",
             email = "patient@study",
             name = "patient_01",
             password = hash_password("pass")

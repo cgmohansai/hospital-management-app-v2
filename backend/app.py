@@ -1,5 +1,6 @@
 from flask import Flask
 from config import LocalDevelopmentConfig
+from resources import auth_bp, api_bp, api   #simply resources, imports from init file in resources
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +18,11 @@ def create_app():
     security.init_app(app, datastore = datastore, register_blueprint = True)  # true for the working of the flask security login page. we dont go into the blueprint, we run the app through the apis
 
     app.datastore = datastore
+
+    # blueprints
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(api_bp)
+    # api.init_app(app)
     # for trial 
     with app.app_context():
         db.create_all()
