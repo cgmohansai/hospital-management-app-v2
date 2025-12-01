@@ -22,6 +22,9 @@ doctor_field = {
         "id": fields.Integer,
         "name": fields.String,
         "email": fields.String,
+    }),
+    "department": fields.Nested({
+        "name": fields.String
     })
 }
 
@@ -37,6 +40,14 @@ marshal_fields = {
     "updated_at": fields.DateTime(dt_format='iso8601'),
     "patient": fields.Nested(patient_field, allow_null=True),
     "doctor": fields.Nested(doctor_field, allow_null=True),
+    "treatment": fields.Nested({
+        "diagnosis": fields.String,
+        "tests": fields.String,
+        "prescription": fields.String,
+        "medicines": fields.String,
+        "visit_type": fields.String,
+        "notes": fields.String
+    }, allow_null=True)
 }
 
 
@@ -87,7 +98,13 @@ class AppointmentResource(Resource):
 class AppointmentListResource(Resource):
     
     def get(self):
-        items = AppointmentService.get_all()
+        filters = {}
+        if request.args.get('patient_id'):
+            filters['patient_id'] = request.args.get('patient_id')
+        if request.args.get('doctor_id'):
+            filters['doctor_id'] = request.args.get('doctor_id')
+            
+        items = AppointmentService.get_all(filters)
         return marshal(items, marshal_fields), 200
     
     def post(self):

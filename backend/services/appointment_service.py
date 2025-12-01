@@ -5,7 +5,9 @@ from datetime import datetime
 class AppointmentService:
     
     @staticmethod
-    def get_all():
+    def get_all(filters=None):
+        if filters:
+            return Appointment.query.filter_by(**filters).all()
         return Appointment.query.all()
     
     @staticmethod
@@ -66,6 +68,21 @@ class AppointmentService:
             else:
                 processed_data['time'] = datetime.strptime(processed_data['time'], '%H:%M:%S').time()
         
+        # Handle nested treatment data
+        if 'treatment' in processed_data:
+            treatment_data = processed_data.pop('treatment')
+            from models import Treatment
+            
+            if appointment.treatment:
+                # Update existing treatment
+                for key, value in treatment_data.items():
+                    setattr(appointment.treatment, key, value)
+            else:
+                # Create new treatment
+                treatment_data['appointment_id'] = appointment.id
+                new_treatment = Treatment(**treatment_data)
+                db.session.add(new_treatment)
+
         for key in processed_data:
             if key != 'id':  # Don't update the id
                 setattr(appointment, key, processed_data[key])

@@ -64,7 +64,10 @@ class Treatment(BaseModel):
 
     appointment_id = db.Column(db.Integer, db.ForeignKey("appointments.id"), unique = True, nullable = False)
     diagnosis = db.Column(db.Text)
+    tests = db.Column(db.Text)
     prescription = db.Column(db.Text)
+    medicines = db.Column(db.Text)
+    visit_type = db.Column(db.String)
     notes = db.Column(db.Text)
 
     appointment = db.Relationship('Appointment', back_populates = 'treatment')
@@ -88,6 +91,9 @@ class Doctor(BaseModel):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), unique = True, nullable = False)
     specialization = db.Column(db.String, nullable=False)
     bio = db.Column(db.Text)
+    qualification = db.Column(db.String)
+    experience = db.Column(db.String)
+    phone = db.Column(db.String)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
 
     department_id = db.Column(db.Integer, db.ForeignKey("departments.id"))

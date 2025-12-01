@@ -103,7 +103,7 @@ const isAdmin = computed(() => {
 const fetchPatients = async () => {
   loading.value = true;
   try {
-    const response = await api.get('/patient'); // Assuming /api/patient returns list
+    const response = await api.get('/patients'); // Assuming /api/patient returns list
     patients.value = response.data;
   } catch (err) {
     error.value = 'Failed to load patients.';

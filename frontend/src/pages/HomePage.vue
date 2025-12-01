@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <section class="hero-section text-white d-flex align-items-center">
+    <section id="hero" class="hero-section text-white d-flex align-items-center">
       <div class="container text-center text-md-start">
         <div class="row align-items-center">
           <div class="col-md-8">
@@ -22,7 +22,7 @@
       </div>
     </section>
 
-    <section class="py-5 bg-light">
+    <section id="services" class="py-5 bg-primary bg-opacity-10">
       <div class="container">
         <h2 class="text-center mb-5">Our Services</h2>
         <div class="row g-4">
@@ -45,15 +45,15 @@
       </div>
     </section>
 
-    <section class="py-5">
+    <section id="coe" class="py-5">
       <div class="container">
         <div class="row mb-5">
           <div class="col-lg-8 mx-auto text-center">
             <h2 class="mb-3">Center of Excellence</h2>
             <p class="text-muted mb-0">
               At LifeSync, we provide advanced medical services with centres of excellence in Cardiology,
-              Orthopedics, Neurology, Gastroenterology, General Surgery, and Critical Care, along with more
-              than 15 additional specialties under one roof.
+              Orthopedics, Neurology, Gastroenterology, General Surgery, and Critical Care, providing
+              comprehensive care under one roof.
             </p>
           </div>
         </div>
@@ -67,9 +67,9 @@
               <div class="card-body d-flex align-items-center">
                 <div class="flex-grow-1">
                   <h6 class="mb-0">{{ dept }}</h6>
-                  <a href="#" class="small text-decoration-none text-primary stretched-link">
+                  <router-link :to="`/department/${dept}`" class="small text-decoration-none text-primary stretched-link">
                     View detail
-                  </a>
+                  </router-link>
                 </div>
                 <i class="bi bi-chevron-right text-muted"></i>
               </div>
@@ -79,7 +79,7 @@
       </div>
     </section>
 
-    <section class="py-5 bg-primary text-white">
+    <section id="stats" class="py-5 bg-danger text-white">
       <div class="container">
         <div class="row text-center g-4">
           <div
@@ -95,7 +95,7 @@
       </div>
     </section>
 
-    <section class="py-5 bg-light">
+    <section id="facilities" class="py-5 bg-info bg-opacity-10">
       <div class="container">
         <h2 class="text-center mb-5">Facilities</h2>
         <div class="row">
@@ -117,7 +117,7 @@
       </div>
     </section>
 
-    <section class="py-5">
+    <section id="testimonials" class="py-5 bg-danger bg-opacity-10">
       <div class="container">
         <div class="row g-5">
           <div class="col-md-6" v-for="testimonial in testimonials" :key="testimonial.name">
@@ -142,7 +142,7 @@
       </div>
     </section>
 
-    <section class="py-5 bg-light">
+    <section id="faq" class="py-5 bg-light">
       <div class="container">
         <h2 class="text-center mb-5">Frequently Asked Questions</h2>
         <div class="accordion col-md-8 mx-auto" id="faqAccordion">
@@ -181,23 +181,26 @@
 </template>
 
 <script setup>
-const serviceFeatures = [
-  { title: 'Experienced Doctors', icon: 'bi-people-fill', subtitle: '{total doctors}' },
+import { ref, onMounted } from 'vue';
+import api from '../utils/api';
+
+const serviceFeatures = ref([
+  { title: 'Experienced Doctors', icon: 'bi-people-fill', subtitle: 'Loading...' },
   { title: 'Family Card', icon: 'bi-card-heading' },
   { title: 'Second Opinion', icon: 'bi-chat-quote-fill' },
   { title: 'Home Health Care', icon: 'bi-house-heart-fill' },
   { title: 'Health Check-ups', icon: 'bi-clipboard-pulse' }
-];
+]);
 
 const departments = [
-  'Anesthesiology',
   'Cardiology',
-  'Cardiothoracic',
-  'Critical Care',
-  'Dental',
-  'Dermatology',
-  'Endocrinology',
-  'ENT'
+  'Neurology',
+  'Orthopedics',
+  'Oncology',
+  'Gynecology',
+  'Pediatrics',
+  'General Surgery',
+  'General Medicine'
 ];
 
 const hospitalStats = [
@@ -246,11 +249,24 @@ const faqs = [
     answer: 'Yes, we have a 24/7 emergency department equipped to handle all medical emergencies.'
   }
 ];
+
+onMounted(async () => {
+  try {
+    const response = await api.get('/doctors');
+    serviceFeatures.value[0].subtitle = `${response.data.length}+ Doctors`;
+  } catch (err) {
+    console.error('Failed to fetch doctor count', err);
+    serviceFeatures.value[0].subtitle = '50+ Doctors';
+  }
+});
 </script>
 
 <style scoped>
 .hero-section {
-  background-color: #000000;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   min-height: 600px;
 }
 

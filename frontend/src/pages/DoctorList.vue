@@ -145,7 +145,7 @@ const newDoctor = ref({
 const fetchDoctors = async () => {
   loading.value = true;
   try {
-    const response = await api.get('/doctor');
+    const response = await api.get('/doctors');
     doctors.value = response.data;
   } catch (err) {
     error.value = 'Failed to load doctors.';
@@ -175,57 +175,6 @@ const closeAddModal = () => {
 
 const addDoctor = async () => {
     try {
-        // We use the auth/register endpoint to create the user and basic doctor profile
-        // Note: This endpoint logs the user in by returning a token. We should ignore the token.
-        // Also, we need to handle the fact that the endpoint expects specific fields.
-        
-        // However, the register endpoint creates a doctor with 'active=False' by default.
-        // Since Admin is creating it, we might want to auto-approve or just let it be pending.
-        // The register endpoint logic: if role == "doctor": active = False.
-        
-        // We can use the register endpoint, then immediately approve if we want, or just let the admin approve in the list.
-        // Let's use the register endpoint.
-        
-        // Wait, if we use /auth/register, it might conflict if the current user (admin) is logged in?
-        // No, it's a POST request. It doesn't care who is logged in unless it checks for existing session which it shouldn't for API.
-        // But the frontend might have interceptors attaching the Admin token.
-        // The backend `register` endpoint doesn't seem to check `current_user`.
-        
-        // However, we need to pass `specialization` and `bio`.
-        // The `register` endpoint in `auth_resource.py` ONLY accepts: username, password, name, email, phone, role.
-        // It DOES NOT accept specialization or bio.
-        // It creates a User and adds a Role.
-        // It DOES NOT create a Doctor profile entry in the `doctors` table!
-        // Wait, let's check `auth_resource.py` again.
-        
-        /*
-        if role == "doctor":
-            active = False
-        ...
-        if role == "patient":
-            patient = Patient(...)
-            db.session.add(patient)
-        */
-        
-        // IT DOES NOT CREATE A DOCTOR PROFILE!
-        // So `auth/register` is broken for doctors? Or maybe it expects the doctor profile to be created later?
-        // But `Doctor` model has `user_id` non-nullable.
-        // If `auth/register` doesn't create `Doctor` row, then the user exists but has no doctor profile.
-        
-        // We need to fix `auth/register` in backend OR handle it here.
-        // Since I can't easily change backend logic without potentially breaking things (though I should if it's bugged),
-        // let's see.
-        
-        // If I use `auth/register`, I get a User.
-        // Then I need to create a Doctor profile using `POST /api/doctor`.
-        // `POST /api/doctor` takes `user_id`, `specialization`, etc.
-        
-        // So the flow for Admin adding a doctor:
-        // 1. Call /auth/register to create User (role=doctor).
-        // 2. Get the new user ID from response.
-        // 3. Call /api/doctor to create Doctor profile with that user ID.
-        // 4. Optionally approve (set active=True).
-        
         const registerResponse = await api.post('/auth/register', {
             username: newDoctor.value.username,
             email: newDoctor.value.email,

@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from config import LocalDevelopmentConfig
 from resources import auth_bp, api_bp, api
+from celery_factory import make_celery
 
 def create_app():
     app = Flask(__name__)
@@ -30,6 +31,7 @@ def create_app():
     return app
 
 app = create_app()
+celery = make_celery(app)
 
 if __name__ == "__main__":
     app.run()

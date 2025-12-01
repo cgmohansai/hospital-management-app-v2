@@ -7,11 +7,17 @@ from .marshal_fields import patient_field
 from flask_security import current_user
 
 parser = reqparse.RequestParser()
-parser.add_argument("user_id", type=int, required=True)
+parser.add_argument("user_id", type=int, required=False)
 parser.add_argument("dob", type=str, required=False)
 parser.add_argument("gender", type=str, required=False)
-parser.add_argument("phone", type=str, required=True)
+parser.add_argument("phone", type=str, required=False)
 parser.add_argument("address", type=str, required=False)
+# User fields
+parser.add_argument("username", type=str, required=False)
+parser.add_argument("email", type=str, required=False)
+parser.add_argument("name", type=str, required=False)
+parser.add_argument("password", type=str, required=False)
+parser.add_argument("is_active", type=bool, required=False) # For blacklisting
 
 marshal_fields = patient_field
 service = PatientService

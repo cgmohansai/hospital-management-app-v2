@@ -14,14 +14,14 @@
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="findDoctorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" id="findDoctorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Find a Doctor
             </a>
             <div class="dropdown-menu p-3" aria-labelledby="findDoctorDropdown" style="min-width: 600px;">
               <div class="d-flex flex-row">
                 <ul class="list-unstyled me-4 mb-0" v-for="(column, colIndex) in departmentColumns" :key="colIndex">
                   <li v-for="(dept, index) in column" :key="index">
-                    <a class="dropdown-item rounded" href="#">{{ dept }}</a>
+                    <router-link class="dropdown-item rounded" :to="`/department/${dept}`">{{ dept }}</router-link>
                   </li>
                 </ul>
               </div>
@@ -29,14 +29,14 @@
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="specialistsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" id="specialistsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Specialists
             </a>
             <div class="dropdown-menu p-3" aria-labelledby="specialistsDropdown" style="min-width: 600px;">
               <div class="d-flex flex-row">
                 <ul class="list-unstyled me-4 mb-0" v-for="(column, colIndex) in departmentColumns" :key="colIndex">
                   <li v-for="(dept, index) in column" :key="index">
-                    <a class="dropdown-item rounded" href="#">{{ dept }}</a>
+                    <router-link class="dropdown-item rounded" :to="`/department/${dept}#specialists`">{{ dept }}</router-link>
                   </li>
                 </ul>
               </div>
@@ -44,17 +44,17 @@
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="discoverDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" id="discoverDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Discover LifeSync
             </a>
             <ul class="dropdown-menu" aria-labelledby="discoverDropdown">
-              <li><a class="dropdown-item" href="/#hero">Home</a></li>
-              <li><a class="dropdown-item" href="/#services">Services</a></li>
-              <li><a class="dropdown-item" href="/#coe">Center of Excellence</a></li>
-              <li><a class="dropdown-item" href="/#stats">Key Stats</a></li>
-              <li><a class="dropdown-item" href="/#facilities">Facilities</a></li>
-              <li><a class="dropdown-item" href="/#testimonials">Testimonials</a></li>
-              <li><a class="dropdown-item" href="/#faq">FAQ</a></li>
+              <li><router-link class="dropdown-item" to="/#hero">Home</router-link></li>
+              <li><router-link class="dropdown-item" to="/#services">Services</router-link></li>
+              <li><router-link class="dropdown-item" to="/#coe">Center of Excellence</router-link></li>
+              <li><router-link class="dropdown-item" to="/#stats">Key Stats</router-link></li>
+              <li><router-link class="dropdown-item" to="/#facilities">Facilities</router-link></li>
+              <li><router-link class="dropdown-item" to="/#testimonials">Testimonials</router-link></li>
+              <li><router-link class="dropdown-item" to="/#faq">FAQ</router-link></li>
             </ul>
           </li>
         </ul>
@@ -72,8 +72,8 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
               <li><router-link class="dropdown-item" to="/dashboard">Dashboard</router-link></li>
-              <li v-if="isPatient"><a class="dropdown-item" href="#">Edit Profile</a></li>
-              <li v-if="isPatient"><a class="dropdown-item" href="#">History</a></li>
+              <li v-if="isPatient"><router-link class="dropdown-item" to="/profile">Edit Profile</router-link></li>
+              <li v-if="isPatient"><router-link class="dropdown-item" to="/history">History</router-link></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item text-danger" href="#" @click.prevent="logout">Logout</a></li>
             </ul>
@@ -94,11 +94,8 @@ const router = useRouter();
 
 // List of all medical departments available in the hospital
 const departments = ref([
-  'Anesthesiology', 'Cardiology', 'Cardiothoracic', 'Critical Care',
-  'Dental', 'Dermatology', 'Endocrinology', 'ENT', 'Gastroenterology',
-  'General Medicine', 'General Surgery', 'Gynecology', 'Neurology',
-  'Oncology', 'Ophthalmology', 'Orthopedics', 'Pediatrics', 'Psychiatry',
-  'Urology'
+  'Cardiology', 'Neurology', 'Orthopedics', 'Oncology',
+  'Gynecology', 'Pediatrics', 'General Surgery', 'General Medicine'
 ]);
 
 // -- Computed Properties --
@@ -153,5 +150,16 @@ const logout = () => {
 }
 .dropdown-item:active {
   background-color: #0d6efd;
+}
+.custom-dropdown-toggle {
+  border: 2px solid #0d6efd; /* Blue border */
+  border-radius: 20px;       /* Rounded corners */
+  padding: 5px 15px;         /* Padding for better look */
+  margin: 0 5px;             /* Spacing between buttons */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+.custom-dropdown-toggle:hover, .custom-dropdown-toggle[aria-expanded="true"] {
+  background-color: #0d6efd;
+  color: white !important;
 }
 </style>

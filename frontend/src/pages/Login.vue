@@ -1,30 +1,50 @@
 <template>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow">
-          <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Login</h3>
+  <div class="login-container d-flex align-items-center justify-content-center">
+    <div class="card login-card shadow-lg border-0 rounded-4 overflow-hidden">
+      <div class="row g-0 h-100">
+        <!-- Left Side: Image/Brand -->
+        <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center bg-primary text-white p-5">
+          <div class="text-center">
+            <i class="bi bi-heart-pulse-fill display-1 mb-3"></i>
+            <h2 class="fw-bold">LifeSync</h2>
+            <p class="lead">Your Health, Our Priority.</p>
           </div>
-          <div class="card-body">
-            <div v-if="error" class="alert alert-danger">{{ error }}</div>
-            <form @submit.prevent="loginUser">
-              <div class="mb-3">
-                <label for="username" class="form-label">Username or Email</label>
-                <input type="text" class="form-control" id="username" v-model="username" required>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" v-model="password" required>
-              </div>
-              <button type="submit" class="btn btn-primary w-100" :disabled="loading">
-                <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Login
-              </button>
-            </form>
+        </div>
+        
+        <!-- Right Side: Form -->
+        <div class="col-md-7 p-5 bg-white">
+          <div class="text-center mb-4">
+            <h3 class="fw-bold text-primary">Welcome Back</h3>
+            <p class="text-muted">Please login to your account</p>
           </div>
-          <div class="card-footer text-center">
-            <small>Don't have an account? <router-link to="/register">Register here</router-link></small>
+
+          <div v-if="error" class="alert alert-danger rounded-3">{{ error }}</div>
+          
+          <form @submit.prevent="loginUser">
+            <div class="mb-4">
+              <label for="username" class="form-label fw-semibold text-secondary">Username or Email</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-start-0 ps-0" id="username" v-model="username" placeholder="Enter your username" required>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="password" class="form-label fw-semibold text-secondary">Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+                <input type="password" class="form-control bg-light border-start-0 ps-0" id="password" v-model="password" placeholder="Enter your password" required>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold shadow-sm" :disabled="loading">
+              <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Login
+            </button>
+          </form>
+          
+          <div class="text-center mt-4">
+            <p class="small text-muted">Don't have an account? <router-link to="/register" class="text-primary fw-bold text-decoration-none">Register here</router-link></p>
           </div>
         </div>
       </div>
@@ -88,3 +108,24 @@ const loginUser = async () => {
   }
 };
 </script>
+
+<style scoped>
+.login-container {
+  min-height: 80vh;
+  background-color: #f8f9fa;
+  padding-top: 80px;
+  padding-bottom: 40px;
+}
+.login-card {
+  max-width: 900px;
+  width: 100%;
+  min-height: 500px;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+.input-group-text {
+  border-color: #ced4da;
+}
+</style>

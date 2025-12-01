@@ -36,9 +36,19 @@ class PatientService():
         if not item:
             raise ServiceError("not found")
         
-        db.session.delete(item)
+        # Delete appointments first
+        from models import Appointment
+        Appointment.query.filter_by(patient_id=id).delete()
+        
+        # Delete User (cascades to Patient)
+        user = item.user
+        if user:
+            db.session.delete(user)
+        else:
+            db.session.delete(item)
+            
         db.session.commit()
-        return {"message": "item with {id} deleted successfully"}
+        return {"message": f"Patient with {id} deleted successfully"}
     
     @staticmethod
     def update(data):
@@ -47,17 +57,32 @@ class PatientService():
         if not item:
             raise ServiceError("not found")
         
-        #preproces date if it's a string
+        # Preprocess date
         processed_data = data.copy()
         if 'dob' in processed_data and isinstance(processed_data['dob'], str):
             processed_data['dob'] = datetime.strptime(processed_data['dob'], '%Y-%m-%d').date()
         
-        #if key is present in model
-        print(item.phone)
-        print(processed_data)
+        patient_fields = ['dob', 'gender', 'phone', 'address']
+        user_fields = ['username', 'email', 'name']
+        
+        # Update Patient fields
         for key in processed_data:
-            if key != 'id':  #Don't need to update the id
+            if key in patient_fields and processed_data[key] is not None:
                 setattr(item, key, processed_data[key])
+                
+        # Update User fields
+        if item.user:
+            for key in processed_data:
+                if key in user_fields and processed_data[key] is not None:
+                    setattr(item.user, key, processed_data[key])
+            
+            if 'password' in processed_data and processed_data['password']:
+                from flask_security.utils import hash_password
+                item.user.password = hash_password(processed_data['password'])
+
+            if 'is_active' in processed_data and processed_data['is_active'] is not None:
+                item.user.active = processed_data['is_active']
+
         db.session.commit()
         return item
 

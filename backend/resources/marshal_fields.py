@@ -33,10 +33,13 @@ doctor_fields = {
     "user_id": fields.Integer,
     "specialization": fields.String,
     "bio": fields.String,
+    "phone": fields.String,
     "is_active": fields.Boolean,
     "department_id": fields.Integer,
     "department": fields.Nested(department_field),
     "user": fields.Nested(user_field),
+    "qualification": fields.String,
+    "experience": fields.String,
     "created_at": fields.DateTime,
     "updated_at": fields.DateTime,
 }

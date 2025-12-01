@@ -19,22 +19,22 @@
       <table class="table table-striped table-hover">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Sr No</th>
+            <th>Doctor Name</th>
+            <th>Dept</th>
             <th>Date</th>
             <th>Time</th>
-            <th>Doctor</th>
-            <th>Patient</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="appt in filteredAppointments" :key="appt.id">
-            <td>{{ appt.id }}</td>
+          <tr v-for="(appt, index) in filteredAppointments" :key="appt.id">
+            <td>{{ index + 1 }}</td>
+            <td>{{ appt.doctor && appt.doctor.user ? appt.doctor.user.name : 'Unknown' }}</td>
+            <td>{{ appt.doctor && appt.doctor.department ? appt.doctor.department.name : 'N/A' }}</td>
             <td>{{ appt.date }}</td>
             <td>{{ appt.time }}</td>
-            <td>{{ appt.doctor && appt.doctor.user ? appt.doctor.user.name : 'Unknown' }}</td>
-            <td>{{ appt.patient && appt.patient.user ? appt.patient.user.name : 'Unknown' }}</td>
             <td>
                 <span :class="statusBadgeClass(appt.status)">{{ appt.status || 'Booked' }}</span>
             </td>
@@ -144,8 +144,8 @@ const fetchData = async () => {
     try {
         const [apptRes, docRes, patRes] = await Promise.all([
             api.get('/appointment'),
-            api.get('/doctor'),
-            role === 'patient' ? api.get('/patient') : Promise.resolve({ data: [] })
+            api.get('/doctors'),
+            role === 'patient' ? api.get('/patients') : Promise.resolve({ data: [] })
         ]);
         
         appointments.value = apptRes.data;
