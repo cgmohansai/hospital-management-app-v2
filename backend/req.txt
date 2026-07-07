@@ -28,3 +28,4 @@ WTForms==3.2.1
 celery
 redis
 gunicorn==23.0.0
+argon2-cffi==25.1.0
