@@ -3,7 +3,7 @@ from flask_restful import Resource, marshal, fields, marshal_with, reqparse
 from services.appointment_service import AppointmentService
 from services.service_errors import ServiceError
 
-#nested fields for patient
+                          
 patient_field = {
     "id": fields.Integer,
     "phone": fields.String,
@@ -14,7 +14,7 @@ patient_field = {
     })
 }
 
-#nested fields for doctor
+                         
 doctor_field = {
     "id": fields.Integer,
     "specialization": fields.String,
@@ -28,7 +28,7 @@ doctor_field = {
     })
 }
 
-#MARSHAL fields for appointment
+                               
 marshal_fields = {
     "id": fields.Integer,
     "patient_id": fields.Integer,
@@ -50,14 +50,12 @@ marshal_fields = {
     }, allow_null=True)
 }
 
-
 parser = reqparse.RequestParser()
 parser.add_argument("patient_id", type=int, required=True)
 parser.add_argument("doctor_id", type=int, required=True)
 parser.add_argument("status", type=str, choices=('Booked', 'Completed', 'Cancelled'), required=False)
 parser.add_argument("date", type=str, required=True)
 parser.add_argument("time", type=str, required=True)
-
 
 """/api/appointment/:id"""
 class AppointmentResource(Resource):

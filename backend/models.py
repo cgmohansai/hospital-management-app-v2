@@ -3,16 +3,16 @@ from extensions import db
 from datetime import datetime, timezone
 from flask_security.core import UserMixin, RoleMixin
 
-class BaseModel(db.Model): #common things everywhere, inheritance rather than creating
-    __abstract__ = True #stop from creating the table
+class BaseModel(db.Model):                                                            
+    __abstract__ = True                              
 
     id = db.Column(db.Integer,primary_key = True)   
-    created_at = db.Column(db.DateTime(timezone = True), default = lambda:datetime.now(timezone.utc), nullable = False) # here lambda cuz it uses when needed instead of this it will always takes the default
-#lambda is used when some variable will be changed opon running that class
+    created_at = db.Column(db.DateTime(timezone = True), default = lambda:datetime.now(timezone.utc), nullable = False)                                                                                       
+                                                                          
     updated_at = db.Column(db.DateTime(timezone = True), default = lambda:datetime.now(timezone.utc), 
     onupdate = lambda:datetime.now(timezone.utc), nullable = False)
 
-class User(BaseModel, UserMixin):  #user model is child to db model
+class User(BaseModel, UserMixin):                                  
     __tablename__ = "users"
 
     username = db.Column(db.String, nullable = False, unique = True)
@@ -20,25 +20,24 @@ class User(BaseModel, UserMixin):  #user model is child to db model
     email = db.Column(db.String, nullable = False, unique = True)
     password = db.Column(db.String, nullable = False)
 
-    # for flask-security-too
-    fs_uniquifier = db.Column(db.String, unique = True, nullable = False, default=lambda: str(uuid.uuid4())) # for remember me, tokens dont break even if user chnges the pass or roles it
-    active = db.Column(db.Boolean, default = True) # if active then only he or sshe can login
+                            
+    fs_uniquifier = db.Column(db.String, unique = True, nullable = False, default=lambda: str(uuid.uuid4()))                                                                              
+    active = db.Column(db.Boolean, default = True)                                           
 
-    #role mapping , fs
-    #many to many
-    roles = db.Relationship('Role', backref = 'users', secondary = 'user_roles', lazy = 'joined') # with lazy as joined the user can login faster, 1 sql query instead of 2
-    #one to one
-    doctor_profile = db.Relationship('Doctor', back_populates = 'user', uselist = False, cascade = 'all, delete-orphan') # cascade helps to use in the testing purposes, we never delete the docto from the user
-    patient_profile = db.Relationship('Patient', back_populates = 'user', uselist = False, cascade = 'all, delete-orphan') #uselist usually sql goes one to many while this we mention one to one explicitly
+                      
+                 
+    roles = db.Relationship('Role', backref = 'users', secondary = 'user_roles', lazy = 'joined')                                                                          
+               
+    doctor_profile = db.Relationship('Doctor', back_populates = 'user', uselist = False, cascade = 'all, delete-orphan')                                                                                        
+    patient_profile = db.Relationship('Patient', back_populates = 'user', uselist = False, cascade = 'all, delete-orphan')                                                                                  
 
-
-class Role(BaseModel, RoleMixin): #eg: admin,doctor,patient , fs
+class Role(BaseModel, RoleMixin):                               
     __tablename__ = "roles"
 
     name = db.Column(db.String, unique=True, nullable=False)
     description = db.Column(db.String, nullable=True)
 
-class UserRoles(BaseModel): # connectsusers to roles ,fs
+class UserRoles(BaseModel):                             
     __tablename__ = "user_roles"
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -47,13 +46,13 @@ class UserRoles(BaseModel): # connectsusers to roles ,fs
 class Appointment(BaseModel):
     __tablename__ = "appointments"
 
-    patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"), nullable = False, index = True) #by index query becomes fast
+    patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"), nullable = False, index = True)                             
     doctor_id = db.Column(db.Integer, db.ForeignKey("doctors.id"), nullable = False, index = True)
     status = db.Column(db.Enum("Booked", "Completed", "Cancelled", name = "appointment_status"), nullable = False)
     time = db.Column(db.Time, nullable = False)
     date = db.Column(db.Date, nullable = False)
 
-    #relations
+              
     patient = db.Relationship('Patient', back_populates='appointments')
     doctor = db.Relationship('Doctor', back_populates='appointments')
     
@@ -71,7 +70,6 @@ class Treatment(BaseModel):
     notes = db.Column(db.Text)
 
     appointment = db.Relationship('Appointment', back_populates = 'treatment')
-
 
 class Patient(BaseModel):
     __tablename__ = "patients"

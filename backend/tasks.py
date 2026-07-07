@@ -22,13 +22,13 @@ def send_daily_reminders():
                 f"with Dr. {appt.doctor.user.name} today at {appt.time}. "
                 f"Please visit LifeSync Hospital."
             )
-            # In a real app, you would send SMS or Email here.
-            # For now, we simulate it by printing to the console/logs.
+                                                              
+                                                                      
             print(f"[ALERT] Sending to {patient.user.email}: {message}")
 
 @shared_task
 def send_monthly_reports():
-    # Calculate previous month range
+                                    
     today = datetime.utcnow().date()
     first_day_this_month = today.replace(day=1)
     last_day_prev_month = first_day_this_month - timedelta(days=1)
@@ -36,12 +36,12 @@ def send_monthly_reports():
     
     print(f"Generating monthly reports for {first_day_prev_month} to {last_day_prev_month}...")
     
-    from models import Doctor, Treatment # Import here to avoid circular imports if any
+    from models import Doctor, Treatment                                               
     
     doctors = Doctor.query.all()
     
     for doctor in doctors:
-        # Find completed appointments for this doctor in the date range
+                                                                       
         appointments = Appointment.query.filter(
             Appointment.doctor_id == doctor.id,
             Appointment.status == "Completed",
@@ -53,7 +53,7 @@ def send_monthly_reports():
             print(f"No completed appointments for Dr. {doctor.user.name} last month.")
             continue
             
-        # Generate HTML Report
+                              
         html_content = f"""
         <html>
         <body>
@@ -75,7 +75,7 @@ def send_monthly_reports():
         """
         
         for appt in appointments:
-            # Fetch treatment details if available
+                                                  
             treatment = Treatment.query.filter_by(appointment_id=appt.id).first()
             diagnosis = treatment.diagnosis if treatment else "N/A"
             medicines = treatment.medicines if treatment else "N/A"
@@ -96,10 +96,10 @@ def send_monthly_reports():
         </html>
         """
         
-        # Simulate sending email
+                                
         print(f"==================================================")
         print(f"[EMAIL] Sending Monthly Report to {doctor.user.email}")
         print(f"Subject: Monthly Activity Report - {first_day_prev_month.strftime('%B %Y')}")
         print(f"Content (HTML snippet):")
-        print(html_content[:500] + "...") # Print first 500 chars
+        print(html_content[:500] + "...")                        
         print(f"==================================================")

@@ -3,7 +3,7 @@ import json
 
 base_url = "http://localhost:5000/api"
 
-# 1. Login
+          
 login_url = f"{base_url}/auth/login"
 login_payload = {
     "email": "admin@study",
@@ -24,7 +24,7 @@ try:
         print(f"Login Status: {response.getcode()}")
         resp_json = json.loads(resp_body)
         token = resp_json.get('token') or resp_json.get('response', {}).get('user', {}).get('authentication_token')
-        # Flask-Security-Too might return it differently depending on config, but my previous test showed "token" at top level.
+                                                                                                                               
         print(f"Token received: {token is not None}")
 except urllib.error.HTTPError as e:
     print(f"Login Failed: {e.code}")
@@ -35,13 +35,13 @@ if not token:
     print("No token found.")
     exit(1)
 
-# 2. Add Doctor
-# First create user via /auth/register (as per my frontend logic)
-# Wait, my frontend logic for Add Doctor was:
-# 1. POST /auth/register (create user)
-# 2. POST /doctor (create profile)
+               
+                                                                 
+                                             
+                                      
+                                  
 
-# Let's replicate that.
+                       
 register_url = f"{base_url}/auth/register"
 new_doc_user = {
     "username": "testdoc_script",
@@ -53,15 +53,15 @@ new_doc_user = {
 }
 
 print("\nRegistering new doctor user...")
-# We need to send the token? 
-# /auth/register is usually public. But if I am admin adding it...
-# The frontend calls it without token? No, api.js attaches token if present.
-# But /auth/register might not need it.
-# However, for "Add Doctor" functionality, we are just using the register endpoint.
-# Let's try calling it.
+                             
+                                                                  
+                                                                            
+                                       
+                                                                                   
+                       
 
 reg_headers = headers.copy()
-# reg_headers["Authorization"] = token # Register is public, usually.
+                                                                     
 
 data = json.dumps(new_doc_user).encode('utf-8')
 req = urllib.request.Request(register_url, data=data, headers=reg_headers, method='POST')
@@ -79,9 +79,9 @@ except urllib.error.HTTPError as e:
     print(e.read().decode('utf-8'))
     exit(1)
 
-# 3. Create Doctor Profile
-doctor_url = f"{base_url}/doctors" # Resource is at /doctors (plural) based on __init__.py
-# api.add_resource(DoctorListResource, "/doctors")
+                          
+doctor_url = f"{base_url}/doctors"                                                        
+                                                  
 
 doc_profile_payload = {
     "user_id": new_user_id,
@@ -92,7 +92,7 @@ doc_profile_payload = {
 
 print("\nCreating doctor profile...")
 doc_headers = headers.copy()
-doc_headers["Authorization"] = token # This endpoint definitely needs auth (or maybe not? let's assume yes for admin)
+doc_headers["Authorization"] = token                                                                                 
 
 data = json.dumps(doc_profile_payload).encode('utf-8')
 req = urllib.request.Request(doctor_url, data=data, headers=doc_headers, method='POST')

@@ -1,6 +1,3 @@
-"/login"
-"/register"
-
 from flask import Blueprint, jsonify, request
 from flask_security.utils import verify_password, hash_password
 
@@ -8,15 +5,14 @@ from models import User, Patient, db
 
 from flask import current_app
 
-auth_bp = Blueprint("auth",__name__, url_prefix="/api/auth") #whole auth related routes will be here
-
+auth_bp = Blueprint("auth",__name__, url_prefix="/api/auth")                                        
 
 @auth_bp.route("/login", methods=['POST'])
 def login():
 
     data = request.get_json()
 
-    username_or_email = data.get("username") or data.get("email") # cuz it was mentioned in the doc, user can use both 
+    username_or_email = data.get("username") or data.get("email")                                                      
     password = data.get("password")
 
     if (not username_or_email or not password):
@@ -30,7 +26,7 @@ def login():
     if not verify_password(password, user.password):
         return jsonify({'message': 'Wrong password!'}), 400
     
-    role_names = [role.name for role in user.roles] if user.roles else []     #getting user role for response
+    role_names = [role.name for role in user.roles] if user.roles else []                                    
     
     return jsonify({
             "id": user.id,
@@ -40,7 +36,6 @@ def login():
             "roles": role_names,
             "token": user.get_auth_token(),
         }), 200
-
 
 @auth_bp.route("/register", methods=['POST'])
 def register():
@@ -56,39 +51,39 @@ def register():
     if not username or not password or not name or not email or not phone:
         return jsonify({"message": "Invalid inputs"}), 400
 
-    if role not in ["patient", "doctor"]:#only patient and doctor are allowed to register
+    if role not in ["patient", "doctor"]:                                                
         return jsonify({"message": "Invalid role. Only 'patient' or 'doctor' allowed"}), 400
 
     datastore = current_app.datastore
 
-    if User.query.filter_by(username=username).first(): #cheking if username already present
+    if User.query.filter_by(username=username).first():                                     
         return jsonify({"message": "Username already exists"}), 400
     
-    if User.query.filter_by(email=email).first(): # if email already present
+    if User.query.filter_by(email=email).first():                           
         return jsonify({"message": "Email already exists"}), 400
 
     active = True
     if role == "doctor":
-        active = False  #doctors need admin approval
+        active = False                              
 
-    #creating user with given role
+                                  
     try:
         
-        user = datastore.create_user(  #creating user with flask security attributes
+        user = datastore.create_user(                                               
             username=username,
             name=name,
             email=email,
             password=hash_password(password),
             active=active
         )
-        db.session.flush()  # Flush is used to get user.id
+        db.session.flush()                                
         
-        #find or create the role
+                                
         user_role = datastore.find_or_create_role(role, description=f"{role.capitalize()} User")
-        #adding role to user
+                            
         datastore.add_role_to_user(user, user_role)
         
-        #patient profile creation
+                                 
         if role == "patient":
             patient = Patient(
                 user_id=user.id,

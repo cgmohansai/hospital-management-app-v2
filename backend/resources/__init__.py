@@ -24,4 +24,4 @@ api.add_resource(PatientResource, "/patients/<int:id>")
 api.add_resource(UserListResource, "/users")
 api.add_resource(UserResource, "/users/<int:id>")
 
-api_bp.add_url_rule("/user/<int:id>/approve", view_func=approve_user, methods=["PATCH"]) # add role_required admin
+api_bp.add_url_rule("/user/<int:id>/approve", view_func=approve_user, methods=["PATCH"])                          

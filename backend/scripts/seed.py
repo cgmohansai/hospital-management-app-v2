@@ -1,4 +1,4 @@
-# scripts/seed_db.py
+                    
 
 import uuid
 import random
@@ -22,10 +22,8 @@ from models import (
 
 from flask_security.utils import hash_password
 
-
 fake = Faker()
 fake.add_provider(FoodProvider)
-
 
 def get_or_create_role(name: str, description: str = "") -> Role:
     role = Role.query.filter_by(name=name).first()
@@ -34,7 +32,6 @@ def get_or_create_role(name: str, description: str = "") -> Role:
         db.session.add(role)
         db.session.commit()
     return role
-
 
 def create_user(username: str, name: str, email: str, password: str, roles) -> User:
     user = User.query.filter_by(email=email).first()
@@ -54,30 +51,27 @@ def create_user(username: str, name: str, email: str, password: str, roles) -> U
     db.session.commit()
     return user
 
-
 def random_date_in_range(days_back: int = 90) -> date:
     return (datetime.utcnow() - timedelta(days=random.randint(0, days_back))).date()
-
 
 def random_time_between(start_hour=9, end_hour=18) -> time:
     hour = random.randint(start_hour, end_hour - 1)
     minute = random.choice([0, 15, 30, 45])
     return time(hour=hour, minute=minute)
 
-
 def seed():
-    # --- ROLES ---
+                   
     admin_role = get_or_create_role("admin", "Full access")
     doctor_role = get_or_create_role("doctor", "Registered medical professional")
     patient_role = get_or_create_role("patient", "Registered patient")
     
-    # Cleanup manager role
+                          
     manager_role = Role.query.filter_by(name="manager").first()
     if manager_role:
         db.session.delete(manager_role)
         db.session.commit()
 
-    # --- ADMIN USER ---
+                        
     create_user(
         username="admin",
         name="Admin User",
@@ -86,7 +80,7 @@ def seed():
         roles=[admin_role],
     )
 
-    # --- DEPARTMENTS ---
+                         
     dept_names = [
         "Cardiology",
         "Neurology",
@@ -110,12 +104,12 @@ def seed():
         departments.append(dept)
     db.session.commit()
 
-    # --- DOCTORS (Curated List) ---
+                                    
     doctors = []
     
-    # Curated doctor data
+                         
     doctor_data = [
-        # Cardiology
+                    
         {
             "name": "Dr. Sarah Smith",
             "username": "sarah.smith",
@@ -136,7 +130,7 @@ def seed():
             "experience": "12+ Years",
             "bio": "Dr. James Wilson is an expert in diagnosing and treating heart conditions in children. With a compassionate approach, he manages congenital heart defects and arrhythmias in pediatric patients."
         },
-        # Neurology
+                   
         {
             "name": "Dr. Emily Chen",
             "username": "emily.chen",
@@ -157,7 +151,7 @@ def seed():
             "experience": "10+ Years",
             "bio": "Dr. Michael Brown focuses on the comprehensive management of epilepsy and seizure disorders. He employs advanced diagnostic techniques to tailor treatment plans for his patients."
         },
-        # Orthopedics
+                     
         {
             "name": "Dr. Robert Taylor",
             "username": "robert.taylor",
@@ -178,7 +172,7 @@ def seed():
             "experience": "8+ Years",
             "bio": "Dr. Lisa Davis specializes in treating sports-related injuries. She works closely with athletes to provide rehabilitation and injury prevention strategies."
         },
-        # Oncology
+                  
         {
             "name": "Dr. David Miller",
             "username": "david.miller",
@@ -199,7 +193,7 @@ def seed():
             "experience": "16+ Years",
             "bio": "Dr. Jennifer Wilson is a skilled Surgical Oncologist specializing in the surgical management of solid tumors. She is known for her precision and patient-focused care."
         },
-        # Gynecology
+                    
         {
             "name": "Dr. Maria Garcia",
             "username": "maria.garcia",
@@ -220,7 +214,7 @@ def seed():
             "experience": "9+ Years",
             "bio": "Dr. Susan Clark is an expert in reproductive medicine, helping couples achieve their dream of parenthood. She offers personalized fertility treatments and counseling."
         },
-        # Pediatrics
+                    
         {
             "name": "Dr. Thomas Anderson",
             "username": "thomas.anderson",
@@ -241,7 +235,7 @@ def seed():
             "experience": "10+ Years",
             "bio": "Dr. Karen Martinez specializes in the care of newborn infants, especially the ill or premature. She is dedicated to providing the best start in life for her tiny patients."
         },
-        # General Surgery
+                         
         {
             "name": "Dr. William Hernandez",
             "username": "william.hernandez",
@@ -262,7 +256,7 @@ def seed():
             "experience": "12+ Years",
             "bio": "Dr. Nancy White specializes in advanced laparoscopic procedures. She focuses on minimally invasive techniques to reduce recovery time and post-operative pain."
         },
-        # General Medicine
+                          
         {
             "name": "Dr. Joseph Lee",
             "username": "joseph.lee",
@@ -286,7 +280,7 @@ def seed():
     ]
 
     for doc_data in doctor_data:
-        # Find department
+                         
         dept = Department.query.filter_by(name=doc_data["dept"]).first()
         if not dept:
             continue
@@ -315,7 +309,7 @@ def seed():
 
     db.session.commit()
 
-    # --- PATIENTS (50) ---
+                           
     patients = []
     for i in range(50):
         full_name = fake.name()
@@ -345,9 +339,9 @@ def seed():
 
     db.session.commit()
 
-    # --- DOCTOR AVAILABILITY ---
+                                 
     for doctor in doctors:
-        for offset in range(0, 30, 3):  # every 3 days
+        for offset in range(0, 30, 3):                
             availability = DoctorAvailability(
                 doctor=doctor,
                 date=(datetime.utcnow() + timedelta(days=offset)).date(),
@@ -359,7 +353,7 @@ def seed():
 
     db.session.commit()
 
-    # --- APPOINTMENTS + TREATMENTS ---
+                                       
     for _ in range(250):
         patient = random.choice(patients)
         doctor = random.choice(doctors)
@@ -388,12 +382,12 @@ def seed():
 
     db.session.commit()
 
-    # --- FUTURE APPOINTMENTS (Next 14 Days) ---
+                                                
     for _ in range(50):
         patient = random.choice(patients)
         doctor = random.choice(doctors)
         
-        # Random date in the next 14 days
+                                         
         future_date = (datetime.utcnow() + timedelta(days=random.randint(1, 14))).date()
         
         appt = Appointment(
@@ -413,7 +407,6 @@ def seed():
     print("- 50 Patients")
     print("- Appointments spread across 90 days for time-series graphs")
     print("- Availability slots generated for each doctor")
-
 
 if __name__ == "__main__":
     with app.app_context():

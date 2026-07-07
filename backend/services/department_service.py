@@ -17,7 +17,7 @@ class DepartmentService():
     
     @staticmethod
     def create(data):
-        # need checks if key is present in model (data validation check)
+                                                                        
         item = model(**data)
         
         db.session.add(item)
@@ -41,7 +41,7 @@ class DepartmentService():
         if not item:
             raise ServiceError("not found")
         
-        # need checks if key is present in model
+                                                
         print(item.name)
         print(data)
         for key in data:

@@ -18,8 +18,8 @@ service = UserService
 
 """/api/user/:id"""
 class UserResource(Resource):
-    # @marshal_with(marshal_fields) either decorator or return function
-    # -> only admin
+                                                                       
+                   
     def get(self, id):
         try:
             if (current_user.has_role("doctor") or current_user.has_role("patient") ) and current_user.id != id:
@@ -29,7 +29,7 @@ class UserResource(Resource):
         except ServiceError as e:
             return {"message": str(e)}, 404
 
-    # -> admin / (doctor / patient) own data
+                                            
     def put(self, id):
         try:
             if (current_user.has_role("doctor") or current_user.has_role("patient") ) and current_user.id != id:
@@ -67,13 +67,13 @@ class UserResource(Resource):
 
 """/api/user -> get, post""" 
 class UserListResource(Resource):
-    # admin only
+                
     @roles_required("admin")
     def get(self):
         items = service.get_all()
         return marshal(items, marshal_fields)
 
-# /user/:id/approve (only admin)
+                                
 @roles_required("admin")
 def approve_user(id):
     try:

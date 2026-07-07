@@ -15,7 +15,7 @@ service = DepartmentService
 
 """/api/department/:id"""
 class DepartmentResource(Resource):
-    # @marshal_with(marshal_fields) either decorator or return function
+                                                                       
     def get(self, id):
         try:
             item = service.get_by_id(id)

@@ -12,20 +12,20 @@ parser.add_argument("dob", type=str, required=False)
 parser.add_argument("gender", type=str, required=False)
 parser.add_argument("phone", type=str, required=False)
 parser.add_argument("address", type=str, required=False)
-# User fields
+             
 parser.add_argument("username", type=str, required=False)
 parser.add_argument("email", type=str, required=False)
 parser.add_argument("name", type=str, required=False)
 parser.add_argument("password", type=str, required=False)
-parser.add_argument("is_active", type=bool, required=False) # For blacklisting
+parser.add_argument("is_active", type=bool, required=False)                   
 
 marshal_fields = patient_field
 service = PatientService
 
 """/api/patient/:id"""
 class PatientResource(Resource):
-    # @marshal_with(marshal_fields) either decorator or return function
-    # -> only admin
+                                                                       
+                   
     def get(self, id):
         try:
             item = service.get_by_id(id)
@@ -35,7 +35,7 @@ class PatientResource(Resource):
         except ServiceError as e:
             return {"message": str(e)}, 404
 
-    # -> admin / (doctor / patient) own data
+                                            
     def put(self, id):
         try:
             item = service.get_by_id(id)

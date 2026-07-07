@@ -6,25 +6,25 @@ from .resource_utils import validate_date
 from .marshal_fields import doctor_fields
 
 parser = reqparse.RequestParser()
-parser.add_argument("user_id", type=int, required=False) # Not required for update if we use ID from URL
-parser.add_argument("specialization", type=str, required=False) # Make optional for partial updates
+parser.add_argument("user_id", type=int, required=False)                                                
+parser.add_argument("specialization", type=str, required=False)                                    
 parser.add_argument("bio", type=str, required=False)
-parser.add_argument("phone", type=str, required=False) # Doctor phone
+parser.add_argument("phone", type=str, required=False)               
 parser.add_argument("is_active", type=bool, required=False)
 parser.add_argument("department_id", type=int, required=False)
-# User fields
+             
 parser.add_argument("username", type=str, required=False)
 parser.add_argument("email", type=str, required=False)
 parser.add_argument("name", type=str, required=False)
 parser.add_argument("password", type=str, required=False)
-# parser.add_argument("phone", type=str, required=False) # Removed from user fields to avoid confusion, using Doctor.phone
+                                                                                                                          
 
 marshal_fields = doctor_fields
 service = DoctorService
 
 """/api/doctor/:id"""
 class DoctorResource(Resource):
-    # @marshal_with(marshal_fields) either decorator or return function
+                                                                       
     def get(self, id):
         try:
             item = service.get_by_id(id)
@@ -74,9 +74,9 @@ class DoctorListResource(Resource):
 class DoctorAvailabilityResource(Resource):
     def get(self, id):
         try:
-            # Optional: allow passing start_date via query param
-            # start_date_str = request.args.get('date')
-            # start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
+                                                                
+                                                       
+                                                                                                           
             
             availability = service.get_availability_slots(id)
             return jsonify(availability)
@@ -86,7 +86,7 @@ class DoctorAvailabilityResource(Resource):
     def post(self, id):
         try:
             data = request.get_json()
-            # Validate data here if needed
+                                          
             service.set_availability(id, data)
             return {"message": "Availability updated successfully"}, 200
         except Exception as e:

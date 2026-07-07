@@ -18,7 +18,7 @@ class PatientService():
     
     @staticmethod
     def create(data):
-        # need checks if key is present in model (data validation check)
+                                                                        
         processed_data = data.copy()
         
         if 'dob' in processed_data and isinstance(processed_data['dob'], str):
@@ -36,11 +36,11 @@ class PatientService():
         if not item:
             raise ServiceError("not found")
         
-        # Delete appointments first
+                                   
         from models import Appointment
         Appointment.query.filter_by(patient_id=id).delete()
         
-        # Delete User (cascades to Patient)
+                                           
         user = item.user
         if user:
             db.session.delete(user)
@@ -57,7 +57,7 @@ class PatientService():
         if not item:
             raise ServiceError("not found")
         
-        # Preprocess date
+                         
         processed_data = data.copy()
         if 'dob' in processed_data and isinstance(processed_data['dob'], str):
             processed_data['dob'] = datetime.strptime(processed_data['dob'], '%Y-%m-%d').date()
@@ -65,12 +65,12 @@ class PatientService():
         patient_fields = ['dob', 'gender', 'phone', 'address']
         user_fields = ['username', 'email', 'name']
         
-        # Update Patient fields
+                               
         for key in processed_data:
             if key in patient_fields and processed_data[key] is not None:
                 setattr(item, key, processed_data[key])
                 
-        # Update User fields
+                            
         if item.user:
             for key in processed_data:
                 if key in user_fields and processed_data[key] is not None:

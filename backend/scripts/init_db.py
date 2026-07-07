@@ -3,14 +3,14 @@ from app import app
 from models import db
 from flask_security import SQLAlchemyUserDatastore
 
-# from backend
-# py -m scripts.init_db 
+              
+                        
 
 with app.app_context():
-    db.drop_all() # delete existing tables
-    db.create_all() # fresh tables , refresh steps
+    db.drop_all()                         
+    db.create_all()                               
     
-    datastore : SQLAlchemyUserDatastore = app.datastore  #datastore from the app context
+    datastore : SQLAlchemyUserDatastore = app.datastore                                 
 
     admin_role = datastore.find_or_create_role("admin", description="Super User")
     doctor_role = datastore.find_or_create_role("doctor", description="Doctor User")
