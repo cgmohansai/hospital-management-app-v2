@@ -6,9 +6,9 @@
       <h2 v-else>Welcome {{ user.name }}</h2>
     </div>
 
-    <!-- admin dashboard -->
+    
     <div v-if="isAdmin">
-      <!-- Stats Hero Section -->
+      
       <div class="row mb-4">
         <div class="col-md-4">
           <div class="card text-white bg-primary mb-3 shadow-sm h-100">
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <!-- Management Section -->
+      
       <div class="card shadow-sm border-0">
         <div class="card-header bg-white py-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -56,7 +56,7 @@
             </button>
           </div>
           
-          <!-- Search Bar -->
+          
           <div class="input-group">
             <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
             <input type="text" class="form-control border-start-0 ps-0" placeholder="Search by Name, ID, Specialization, Phone..." v-model="searchQuery">
@@ -64,7 +64,7 @@
         </div>
         <div class="card-body">
           
-          <!-- Doctors Tab -->
+          
           <div v-if="activeAdminTab === 'doctors'">
             <div class="table-responsive">
               <table class="table table-hover align-middle">
@@ -101,7 +101,7 @@
             </div>
           </div>
 
-          <!-- Patients Tab -->
+          
           <div v-if="activeAdminTab === 'patients'">
             <div class="table-responsive">
               <table class="table table-hover align-middle">
@@ -138,7 +138,7 @@
             </div>
           </div>
 
-          <!-- Appointments Tab -->
+          
           <div v-if="activeAdminTab === 'appointments'">
             <div class="table-responsive">
               <table class="table table-hover align-middle">
@@ -180,7 +180,7 @@
       </div>
     </div>
 
-    <!-- doctor dashboard -->
+    
     <div v-if="isDoctor" class="row">
       <div class="col-md-12">
         <div class="card shadow-sm border-0">
@@ -199,7 +199,7 @@
           </div>
           <div class="card-body">
             
-            <!-- Appointments Tab -->
+            
             <div v-if="activeTab === 'appointments'">
               <div class="table-responsive">
                 <table class="table table-hover align-middle">
@@ -235,7 +235,7 @@
               </div>
             </div>
 
-            <!-- My Patients Tab -->
+            
             <div v-if="activeTab === 'patients'">
                <div class="table-responsive">
                 <table class="table table-hover align-middle">
@@ -266,7 +266,7 @@
               </div>
             </div>
 
-            <!-- Availability Tab -->
+            
             <div v-if="activeTab === 'availability'">
               <div class="row">
                 <div class="col-md-12">
@@ -298,7 +298,7 @@
       </div>
     </div>
 
-    <!-- patient dashboard -->
+    
     <div v-if="isPatient" class="row align-items-center">
       <div class="col-md-6 text-center mb-4 mb-md-0">
         <h1 class="display-4 fw-bold text-primary">
@@ -319,12 +319,12 @@
       </div>
     </div>
 
-    <!-- Debug info for unknown roles -->
+    
     <div v-if="!isAdmin && !isDoctor && !isPatient" class="alert alert-warning">
       <p>Debug: Current User Role is "{{ user.role }}". Please contact support.</p>
     </div>
 
-    <!-- Departments Section (Patient only) -->
+    
     <div v-if="isPatient" class="mt-5 mb-5" ref="departmentsSection">
       <h3 class="mb-4 text-primary border-bottom pb-2">Our Departments</h3>
       <div class="row g-4">
@@ -345,8 +345,8 @@
       </div>
     </div>
 
-    <!-- Admin Modals -->
-    <!-- Add Doctor Modal -->
+    
+    
     <div v-if="showAddDoctorModal" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -391,7 +391,7 @@
       </div>
     </div>
 
-    <!-- Edit Doctor Modal -->
+    
     <div v-if="showEditDoctorModal" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -436,7 +436,7 @@
       </div>
     </div>
 
-    <!-- Edit Patient Modal -->
+    
     <div v-if="showEditPatientModal" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -485,7 +485,6 @@ const router = useRouter();
 const doctorAppointments = ref([]);
 const activeTab = ref('appointments');
 
-// Admin Refs
 const activeAdminTab = ref('doctors');
 const doctors = ref([]);
 const patients = ref([]);
@@ -622,7 +621,6 @@ const fetchAdminData = async () => {
   }
 };
 
-// Admin Actions - Doctor
 const addDoctor = async () => {
     try {
         const registerResponse = await api.post('/auth/register', {
@@ -658,35 +656,35 @@ const editDoctor = (doc) => {
         id: doc.id,
         specialization: doc.specialization,
         bio: doc.bio,
-        // Flatten user details
+        
         name: doc.user ? doc.user.name : '',
         email: doc.user ? doc.user.email : '',
-        phone: doc.user ? doc.user.phone : '', // Note: Doctor model doesn't have phone, User does. Wait, seed says create_user has phone? No, create_user doesn't have phone in seed.py line 39. 
-        // Wait, User model doesn't have phone? 
-        // Let's check models.py. User model: username, name, email, password, fs_uniquifier, active. NO PHONE.
-        // Patient has phone. Doctor has NO phone in model.
-        // But the user requested "Phone" for doctor.
-        // If User model doesn't have phone, and Doctor model doesn't have phone, where is it?
-        // Seed.py line 140: create_user called.
-        // Seed.py line 39: create_user(username, name, email, password, roles).
-        // So Doctor currently has NO phone number storage.
-        // I need to add 'phone' to Doctor model or User model.
-        // Patient has 'phone'.
-        // User asked: "make sure this is attributes are present for the doctor... Phone".
-        // So I MUST add phone to Doctor model or User model.
-        // Adding to User model makes sense for all users.
-        // But Patient has it separately.
-        // Let's add 'phone' to Doctor model for now to avoid migrating User table and breaking Patient logic (or duplication).
-        // OR add to User and migrate.
-        // Given the constraints and existing Patient.phone, adding Doctor.phone is safer/easier.
-        // BUT, the user request listed "Username, Email, Name, Password, Phone" as attributes for the doctor.
-        // Let's check if I can add it to Doctor model.
+        phone: doc.user ? doc.user.phone : '', 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         username: doc.user ? doc.user.username : '',
         password: ''
     };
-    // If Doctor model has phone, use it. If not, I need to add it.
-    // I will assume I need to add it to the Doctor model in the next step if it's missing.
-    // For now, let's map it if it exists.
+    
+    
+    
     if (doc.phone) currentDoctor.value.phone = doc.phone;
     showEditDoctorModal.value = true;
 };
@@ -699,12 +697,12 @@ const updateDoctor = async () => {
             name: currentDoctor.value.name,
             email: currentDoctor.value.email,
             username: currentDoctor.value.username,
-            // phone: currentDoctor.value.phone // Need to handle this
+            
         };
         if (currentDoctor.value.password) {
             payload.password = currentDoctor.value.password;
         }
-        // If I add phone to Doctor model, I send it here.
+        
         if (currentDoctor.value.phone) {
             payload.phone = currentDoctor.value.phone;
         }
@@ -741,7 +739,6 @@ const deleteDoctor = async (id) => {
     }
 };
 
-// Admin Actions - Patient
 const editPatient = (patient) => {
     currentPatient.value = { ...patient };
     showEditPatientModal.value = true;
@@ -768,7 +765,7 @@ const togglePatientStatus = async (patient) => {
     const isActive = patient.user && patient.user.active;
     if(!confirm(`Are you sure you want to ${isActive ? 'blacklist' : 'activate'} this patient?`)) return;
     try {
-        // Patient resource supports is_active which updates the User
+        
         await api.patch(`/patients/${patient.id}`, { is_active: !isActive });
         fetchAdminData();
     } catch (err) {

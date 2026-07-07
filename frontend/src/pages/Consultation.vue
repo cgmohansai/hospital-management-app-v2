@@ -36,7 +36,7 @@
       </div>
 
       <div class="row">
-        <!-- History Section -->
+        
         <div class="col-md-4">
           <div class="card shadow-sm border-0 h-100">
             <div class="card-header bg-light">
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <!-- Consultation Form -->
+        
         <div class="col-md-8">
           <div class="card shadow-sm border-0 h-100">
             <div class="card-header bg-primary text-white">
@@ -112,7 +112,7 @@
       </div>
     </div>
 
-    <!-- Details Modal -->
+    
     <div v-if="selectedVisit" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -168,13 +168,13 @@ const form = ref({
 const fetchData = async () => {
   loading.value = true;
   try {
-    // 1. Get Appointment Details
+    
     const apptRes = await api.get(`/appointment/${appointmentId}`);
     appointment.value = apptRes.data;
     patient.value = appointment.value.patient;
 
-    // 2. Get Patient History (All completed appointments for this patient)
-    // We need to fetch all appointments and filter by patient_id
+    
+    
     const historyRes = await api.get(`/appointment?patient_id=${patient.value.id}`);
     history.value = historyRes.data
       .filter(a => a.status === 'Completed' && a.id !== parseInt(appointmentId))
@@ -192,19 +192,19 @@ const completeConsultation = async () => {
   if (!confirm("Are you sure you want to complete this consultation?")) return;
 
   try {
-    // We need to update the appointment with treatment details and set status to Completed.
-    // The current API might not support updating treatment directly via PATCH appointment.
-    // We might need to check how AppointmentResource handles PUT/PATCH.
-    // Looking at AppointmentResource, it uses `appointment_parser` which includes `status`.
-    // But `treatment` is a nested relationship.
-    // Usually we need a separate endpoint or the main PUT should handle it if configured.
-    // Let's assume we need to send a PUT request with all data including treatment.
-    // Wait, `AppointmentResource` might not handle nested writes for `treatment` automatically unless we implemented it.
-    // Let's check `AppointmentResource.put`.
     
-    // If backend doesn't support nested write, we might need to update `AppointmentResource` or create a `TreatmentResource`.
-    // The user asked to "create a new thread to it", implying we are creating a treatment record.
-    // Let's try sending the treatment data in the body.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     const payload = {
       status: 'Completed',
@@ -213,9 +213,9 @@ const completeConsultation = async () => {
       }
     };
 
-    // We need to make sure backend handles this.
-    // I'll assume I need to update backend to handle 'treatment' in PUT if not already.
-    // I'll check `AppointmentResource` in a moment.
+    
+    
+    
     
     await api.patch(`/appointment/${appointmentId}`, payload);
     alert("Consultation completed successfully!");

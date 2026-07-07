@@ -116,7 +116,7 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    // Redirect to dashboard if already logged in and trying to access login/register
+    
     if (isAuthenticated && (to.name === 'Login' || to.name === 'Register')) {
       next({ name: 'Dashboard' });
     } else {

@@ -2,7 +2,7 @@
   <div class="register-container d-flex align-items-center justify-content-center">
     <div class="card register-card shadow-lg border-0 rounded-4 overflow-hidden">
       <div class="row g-0 h-100">
-        <!-- Left Side: Branding -->
+        
         <div class="col-md-4 d-none d-md-flex align-items-center justify-content-center bg-success text-white p-5">
           <div class="text-center">
             <i class="bi bi-person-plus-fill display-1 mb-3"></i>
@@ -11,7 +11,7 @@
           </div>
         </div>
 
-        <!-- Right Side: Form -->
+        
         <div class="col-md-8 p-5 bg-white">
           <div class="text-center mb-4">
             <h3 class="fw-bold text-success">Create Account</h3>
@@ -68,44 +68,39 @@
 import { ref, reactive } from 'vue';
 import api from '../utils/api';
 
-// -- Form Data --
 const form = reactive({
   username: '',
   email: '',
   name: '',
   password: '',
   phone: '',
-  role: 'patient' // Default role for public registration
+  role: 'patient' 
 });
 
-// -- UI State --
 const error = ref('');
 const success = ref('');
 const loading = ref(false);
 
-// -- Methods --
-
-// Handle user registration submission
 const registerUser = async () => {
-  // Reset UI state
+  
   error.value = '';
   success.value = '';
   loading.value = true;
 
   try {
-    // 1. Send registration request to backend
+    
     const response = await api.post('/auth/register', form);
     
-    // 2. Show success message
+    
     success.value = response.data.message || 'Registration successful! Please login.';
     
-    // 3. Clear form fields
+    
     Object.keys(form).forEach(key => {
         if (key === 'role') form[key] = 'patient';
         else form[key] = '';
     });
   } catch (err) {
-    // Handle registration errors
+    
     if (err.response && err.response.data && err.response.data.message) {
       error.value = err.response.data.message;
     } else {
@@ -131,6 +126,6 @@ const registerUser = async () => {
 }
 .form-control:focus {
   box-shadow: none;
-  border-color: #198754; /* Success green */
+  border-color: #198754; 
 }
 </style>

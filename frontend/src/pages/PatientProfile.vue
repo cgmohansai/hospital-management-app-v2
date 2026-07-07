@@ -99,7 +99,7 @@ const fetchProfile = async () => {
       return;
     }
 
-    // Find patient profile
+    
     const patientsRes = await api.get('/patients');
     const myPatient = patientsRes.data.find(p => p.user && p.user.id === user.id);
 
@@ -141,12 +141,12 @@ const updateProfile = async () => {
 
     await api.put(`/patients/${patientId.value}`, payload);
     
-    // Update local storage user name if changed
+    
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.name !== form.value.name) {
       user.name = form.value.name;
       localStorage.setItem('user', JSON.stringify(user));
-      // Force reload to update navbar name or use a state store
+      
       window.location.reload(); 
     } else {
         alert('Profile updated successfully');

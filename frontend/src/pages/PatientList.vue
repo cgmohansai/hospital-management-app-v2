@@ -2,7 +2,7 @@
   <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2>Patients</h2>
-      <!-- <button class="btn btn-primary" @click="showAddModal">Add Patient</button> -->
+      
     </div>
 
     <div v-if="loading" class="text-center">
@@ -46,7 +46,7 @@
       <p v-if="patients.length === 0" class="text-center">No patients found.</p>
     </div>
 
-    <!-- Edit Modal (Simple implementation) -->
+    
     <div v-if="showModal" class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -103,7 +103,7 @@ const isAdmin = computed(() => {
 const fetchPatients = async () => {
   loading.value = true;
   try {
-    const response = await api.get('/patients'); // Assuming /api/patient returns list
+    const response = await api.get('/patients'); 
     patients.value = response.data;
   } catch (err) {
     error.value = 'Failed to load patients.';
@@ -126,12 +126,12 @@ const deletePatient = async (id) => {
 };
 
 const editPatient = (patient) => {
-    // Clone to avoid modifying directly
+    
     currentPatient.value = { ...patient };
-    // Ensure DOB is in YYYY-MM-DD format for input type=date
+    
     if (currentPatient.value.dob) {
-        // Assuming API returns ISO string or similar, might need formatting
-        // If it's already YYYY-MM-DD, fine.
+        
+        
     }
     showModal.value = true;
 };
@@ -148,25 +148,25 @@ const updatePatient = async () => {
             gender: currentPatient.value.gender,
             dob: currentPatient.value.dob,
             address: currentPatient.value.address,
-            user_id: currentPatient.value.user_id // Required by parser?
+            user_id: currentPatient.value.user_id 
         };
         
-        // We need to send user_id because the parser requires it? 
-        // Let's check the parser in patient_resource.py: parser.add_argument("user_id", type=int, required=True)
-        // Yes, it is required.
+        
+        
+        
         
         await api.put(`/patient/${currentPatient.value.id}`, payload);
         
-        // Update local list
+        
         const index = patients.value.findIndex(p => p.id === currentPatient.value.id);
         if (index !== -1) {
-            // Update only the fields we changed, or refetch. 
-            // Ideally refetch or merge.
-            // For now, let's just update the fields in the list to reflect changes immediately
+            
+            
+            
             patients.value[index] = { ...patients.value[index], ...payload };
         }
         closeModal();
-        fetchPatients(); // Refetch to be sure (e.g. if backend does formatting)
+        fetchPatients(); 
     } catch (err) {
         alert('Failed to update patient');
         console.error(err);

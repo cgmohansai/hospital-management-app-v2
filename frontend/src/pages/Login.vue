@@ -2,7 +2,7 @@
   <div class="login-container d-flex align-items-center justify-content-center">
     <div class="card login-card shadow-lg border-0 rounded-4 overflow-hidden">
       <div class="row g-0 h-100">
-        <!-- Left Side: Image/Brand -->
+        
         <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center bg-primary text-white p-5">
           <div class="text-center">
             <i class="bi bi-heart-pulse-fill display-1 mb-3"></i>
@@ -11,7 +11,7 @@
           </div>
         </div>
         
-        <!-- Right Side: Form -->
+        
         <div class="col-md-7 p-5 bg-white">
           <div class="text-center mb-4">
             <h3 class="fw-bold text-primary">Welcome Back</h3>
@@ -59,30 +59,25 @@ import api from '../utils/api';
 
 const router = useRouter();
 
-// -- Form State --
 const username = ref('');
 const password = ref('');
 
-// -- UI State --
 const error = ref('');
 const loading = ref(false);
 
-// -- Methods --
-
-// Handle user login submission
 const loginUser = async () => {
-  // Reset UI state
+  
   error.value = '';
   loading.value = true;
 
   try {
-    // 1. Send login request to backend
+    
     const response = await api.post('/auth/login', {
       username: username.value,
       password: password.value
     });
 
-    // 2. Store authentication token and user details
+    
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('user', JSON.stringify({
         id: response.data.id,
@@ -92,12 +87,12 @@ const loginUser = async () => {
         roles: response.data.roles
     }));
 
-    // 3. Redirect to dashboard
-    // Using window.location.href to ensure a full reload, updating Navbar state
+    
+    
     window.location.href = '/dashboard'; 
 
   } catch (err) {
-    // Handle login errors
+    
     if (err.response && err.response.data && err.response.data.message) {
       error.value = err.response.data.message;
     } else {

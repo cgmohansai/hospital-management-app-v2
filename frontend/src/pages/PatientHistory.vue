@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <!-- Details Modal -->
+    
     <div v-if="selectedVisit" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -133,10 +133,10 @@ const fetchHistory = async () => {
     let patientIdToFetch = null;
 
     if (routePatientId) {
-      // If ID is provided in route (e.g. doctor viewing patient), use it
+      
       patientIdToFetch = routePatientId;
     } else {
-      // Otherwise, find the patient profile for the current logged-in user
+      
       const patientsRes = await api.get('/patients');
       const myPatient = patientsRes.data.find(p => p.user && p.user.id === userId);
       if (myPatient) {
@@ -149,7 +149,7 @@ const fetchHistory = async () => {
       return;
     }
 
-    // 2. Get appointments for this patient
+    
     const apptRes = await api.get(`/appointment?patient_id=${patientIdToFetch}`);
     
     visits.value = apptRes.data.filter(a => a.status === 'Completed').sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -185,10 +185,10 @@ onMounted(() => {
 const exportToCSV = () => {
   if (visits.value.length === 0) return;
 
-  // Define headers
+  
   const headers = ['Date', 'Doctor', 'Department', 'Diagnosis', 'Tests', 'Medicines', 'Notes'];
   
-  // Map data to rows
+  
   const rows = visits.value.map(visit => {
     const doctorName = visit.doctor && visit.doctor.user ? visit.doctor.user.name : 'Unknown';
     const department = visit.doctor && visit.doctor.department ? visit.doctor.department.name : 'N/A';
@@ -197,7 +197,7 @@ const exportToCSV = () => {
     const medicines = visit.treatment ? visit.treatment.medicines : '';
     const notes = visit.treatment ? visit.treatment.notes : '';
     
-    // Escape fields for CSV (handle commas and quotes)
+    
     const escape = (field) => {
       if (field === null || field === undefined) return '';
       const stringField = String(field);
@@ -218,10 +218,10 @@ const exportToCSV = () => {
     ].join(',');
   });
 
-  // Combine headers and rows
+  
   const csvContent = [headers.join(','), ...rows].join('\n');
 
-  // Create blob and download link
+  
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');

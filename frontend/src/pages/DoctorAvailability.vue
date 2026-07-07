@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <!-- Booking Confirmation Modal (Simplified as a section for now) -->
+      
       <div v-if="selectedSlot" class="fixed-bottom bg-white shadow-lg p-4 border-top" style="z-index: 1050;">
         <div class="container">
           <div class="d-flex justify-content-between align-items-center">
@@ -99,7 +99,7 @@ const formatDate = (dateStr) => {
 };
 
 const formatTime = (timeStr) => {
-  // timeStr is HH:MM
+  
   const [hours, minutes] = timeStr.split(':');
   const date = new Date();
   date.setHours(hours);
@@ -127,28 +127,28 @@ const bookAppointment = async () => {
   
   try {
     const user = JSON.parse(localStorage.getItem('user'));
-    // We need patient_id. Assuming user object has it or we need to fetch it.
-    // Actually, backend expects patient_id.
-    // If user is patient, we need their patient_id.
-    // Let's assume we can get it from /users/me or similar, or it's in localStorage.
-    // In Login.vue, we store user details. Let's check if patient_id is there.
-    // Login.vue stores: id, username, email, name, roles.
-    // It does NOT store patient_id.
-    // We need to fetch patient profile or assume patient_id = user.id (which is NOT true based on models).
-    // Patient model has user_id.
     
-    // Quick fix: Fetch current user's patient profile first.
-    // Or, update Login to return patient_id.
-    // Or, fetch /patients?user_id=...
     
-    // Let's try to fetch patient details using user_id from localStorage
-    const patientsResponse = await api.get('/patients'); // This returns all patients. Not ideal.
-    // We need to filter by user_id.
-    // But PatientListResource doesn't support filtering by user_id yet?
-    // Let's check PatientListResource.
     
-    // Ideally, we should have an endpoint /patients/me or similar.
-    // For now, let's fetch all and find. (Inefficient but works for small scale)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    const patientsResponse = await api.get('/patients'); 
+    
+    
+    
+    
+    
+    
     const myPatient = patientsResponse.data.find(p => p.user.id === user.id);
     
     if (!myPatient) {

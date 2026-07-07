@@ -48,7 +48,7 @@
       <p v-if="filteredAppointments.length === 0" class="text-center">No appointments found.</p>
     </div>
 
-    <!-- Book Appointment Modal -->
+    
     <div v-if="showModal" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -102,15 +102,13 @@ const user = JSON.parse(localStorage.getItem('user'));
 const role = user && user.roles && user.roles.length > 0 ? user.roles[0] : '';
 const userId = user ? user.id : null;
 
-// We need patient_id for booking. 
-// Since login doesn't return it, we'll fetch all patients and find ours.
 const myPatientId = ref(null);
 
 const filteredAppointments = computed(() => {
     if (role === 'admin') return appointments.value;
     if (role === 'doctor') {
-        // Filter where doctor.user.id === userId
-        // Note: appointment.doctor has nested user.
+        
+        
         return appointments.value.filter(a => a.doctor && a.doctor.user && a.doctor.user.id === userId);
     }
     if (role === 'patient') {
@@ -129,13 +127,13 @@ const statusBadgeClass = (status) => {
 
 const canCancel = (appt) => {
     if (appt.status === 'Cancelled' || appt.status === 'Completed') return false;
-    // Patient can cancel their own. Doctor can cancel. Admin can cancel.
+    
     return true; 
 };
 
 const canComplete = (appt) => {
     if (appt.status !== 'Booked' && appt.status !== null) return false;
-    // Only Doctor can complete
+    
     return role === 'doctor';
 };
 
@@ -189,7 +187,7 @@ const bookAppointment = async () => {
             status: 'Booked'
         });
         closeModal();
-        fetchData(); // Refresh list
+        fetchData(); 
     } catch (err) {
         alert('Failed to book appointment.');
         console.error(err);
@@ -199,22 +197,22 @@ const bookAppointment = async () => {
 const cancelAppointment = async (id) => {
     if(!confirm('Cancel this appointment?')) return;
     try {
-        await api.put(`/appointment/${id}`, { status: 'Cancelled' }); // Using PUT as per resource, but usually PATCH is better. Resource has both.
-        // Wait, resource PUT expects all args? 
-        // Resource PUT: args = parser.parse_args(). Parser requires patient_id, doctor_id etc.
-        // Resource PATCH: data = request.get_json(). update(data).
-        // So we should use PATCH for partial update.
-        // Let's try PATCH.
-        // Wait, api.put in axios is PUT. api.patch is PATCH.
-        // Let's check my api.js. It's standard axios.
+        await api.put(`/appointment/${id}`, { status: 'Cancelled' }); 
         
-        // Let's use PATCH.
+        
+        
+        
+        
+        
+        
+        
+        
         await api.patch(`/appointment/${id}`, { status: 'Cancelled' });
         fetchData();
     } catch (err) {
-        // Fallback to PUT if PATCH fails? 
-        // Or maybe I need to send all data for PUT.
-        // Let's try PATCH first.
+        
+        
+        
         console.error(err);
         alert('Failed to cancel appointment');
     }

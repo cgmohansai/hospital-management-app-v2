@@ -49,7 +49,7 @@
       <p v-if="doctors.length === 0" class="text-center">No doctors found.</p>
     </div>
 
-    <!-- Add Doctor Modal -->
+    
     <div v-if="showAddDoctorModal" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -94,7 +94,7 @@
       </div>
     </div>
 
-    <!-- Edit Modal -->
+    
     <div v-if="showModal" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -186,12 +186,12 @@ const addDoctor = async () => {
         
         const newUserId = registerResponse.data.id;
         
-        // Now create doctor profile
+        
         await api.post('/doctor', {
             user_id: newUserId,
             specialization: newDoctor.value.specialization,
             bio: newDoctor.value.bio,
-            is_active: true // Admin created, so auto-active? Or false? Let's say true.
+            is_active: true 
         });
         
         closeAddModal();
@@ -212,7 +212,7 @@ const approveDoctor = async (doc) => {
     if(!confirm(`Approve Dr. ${doc.user ? doc.user.name : ''}?`)) return;
     try {
         await api.patch(`/doctor/${doc.id}`, { is_active: true });
-        // Update local state
+        
         doc.is_active = true;
     } catch (err) {
         alert('Failed to approve doctor');

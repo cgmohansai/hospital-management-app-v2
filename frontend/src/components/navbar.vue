@@ -59,13 +59,13 @@
           </li>
         </ul>
 
-        <!-- Right Side -->
+        
         <div class="d-flex align-items-center">
           <router-link v-if="!isAuthenticated" to="/login" class="btn btn-primary px-4 me-3 rounded-pill">
             Book Appointment
           </router-link>
 
-          <!-- User Menu -->
+          
           <div class="dropdown" v-if="isAuthenticated">
             <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-circle fs-5 me-1"></i> {{ username }}
@@ -90,33 +90,32 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-// -- State --
-
-// List of all medical departments available in the hospital
 const departments = ref([
   'Cardiology', 'Neurology', 'Orthopedics', 'Oncology',
   'Gynecology', 'Pediatrics', 'General Surgery', 'General Medicine'
 ]);
 
-// -- Computed Properties --
+const getStoredUser = () => {
+  try {
+    const rawUser = localStorage.getItem('user');
+    return rawUser ? JSON.parse(rawUser) : null;
+  } catch (error) {
+    return null;
+  }
+};
 
-// Check if user is logged in based on token presence
 const isAuthenticated = computed(() => !!localStorage.getItem('token'));
 
-// Get current username from local storage
 const username = computed(() => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = getStoredUser();
   return user ? user.username : '';
 });
 
-// Check if the current user has the 'patient' role
 const isPatient = computed(() => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = getStoredUser();
   return user && user.roles && user.roles.includes('patient');
 });
 
-// Split departments into chunks (columns) for better UI display in dropdowns
-// This creates a multi-column layout for long lists
 const departmentColumns = computed(() => {
   const itemsPerColumn = 6;
   const columns = [];
@@ -125,8 +124,6 @@ const departmentColumns = computed(() => {
   }
   return columns;
 });
-
-// -- Methods --
 
 const logout = () => {
   localStorage.removeItem('token');
@@ -152,11 +149,11 @@ const logout = () => {
   background-color: #0d6efd;
 }
 .custom-dropdown-toggle {
-  border: 2px solid #0d6efd; /* Blue border */
-  border-radius: 20px;       /* Rounded corners */
-  padding: 5px 15px;         /* Padding for better look */
-  margin: 0 5px;             /* Spacing between buttons */
-  transition: all 0.3s ease; /* Smooth transition */
+  border: 2px solid #0d6efd; 
+  border-radius: 20px;       
+  padding: 5px 15px;         
+  margin: 0 5px;             
+  transition: all 0.3s ease; 
 }
 .custom-dropdown-toggle:hover, .custom-dropdown-toggle[aria-expanded="true"] {
   background-color: #0d6efd;

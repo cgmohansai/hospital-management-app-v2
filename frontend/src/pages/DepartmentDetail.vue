@@ -1,6 +1,6 @@
 <template>
   <div class="department-detail" v-if="department">
-    <!-- Hero Section -->
+    
     <section class="hero-section text-white d-flex align-items-center" :style="{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/bg.jpg')` }">
       <div class="container">
         <div class="row">
@@ -13,12 +13,12 @@
       </div>
     </section>
 
-    <!-- Main Content -->
+    
     <section class="py-5">
       <div class="container">
         <div class="row">
           <div class="col-lg-8">
-            <!-- Intro -->
+            
             <div class="mb-5">
               <h3 class="mb-4 text-primary">Overview</h3>
               <p class="lead text-muted">{{ department.description }}</p>
@@ -28,7 +28,7 @@
               </p>
             </div>
 
-            <!-- Areas of Expertise -->
+            
             <div class="mb-5">
               <h3 class="mb-4 text-primary">Areas of Expertise</h3>
               <div class="row g-4">
@@ -46,7 +46,7 @@
               </div>
             </div>
 
-            <!-- Treatments Offered -->
+            
             <div class="mb-5 bg-light p-4 rounded-3">
               <h3 class="mb-4 text-primary">Treatments Offered</h3>
               <div class="row g-2">
@@ -59,7 +59,7 @@
               </div>
             </div>
 
-            <!-- Our Process -->
+            
             <div class="mb-5">
               <h3 class="mb-4 text-primary">Our Process</h3>
               <div class="row text-center g-4">
@@ -80,7 +80,7 @@
       </div>
     </section>
 
-    <!-- Doctors Section -->
+    
     <section id="specialists" class="py-5 bg-light">
       <div class="container">
         <h2 class="text-center mb-5">Get to Know Our Specialists from {{ department ? department.title : departmentName }}</h2>
@@ -140,42 +140,40 @@ const department = computed(() => departmentsData[departmentName.value]);
 const doctors = ref([]);
 const loadingDoctors = ref(false);
 
-
-
 const fetchDoctors = async () => {
   if (!departmentName.value) return;
   
   loadingDoctors.value = true;
   try {
-    // Fetch all doctors and filter client-side since backend might not support filtering by dept name directly yet
-    // Ideally backend should support /doctor?department=Name
+    
+    
     const response = await api.get('/doctors');
     const allDoctors = response.data;
     
-    // Filter doctors belonging to this department
-    // Note: Backend 'department' field in Doctor model is a relationship or string?
-    // In seed.py: department=random.choice(departments) -> relationship.
-    // The API response for doctor likely includes nested department object or ID.
-    // Let's check DoctorList.vue or similar to see API structure.
-    // In DoctorList.vue: doc.specialization is used.
-    // We need to check if 'department' is in the response.
+    
+    
+    
+    
+    
+    
+    
     
     doctors.value = allDoctors.filter(doc => {
-       // Check if doc.department exists and matches name, or if specialization matches
-       // For now, let's assume strict department matching if available, else loose matching
+       
+       
        if (doc.department && doc.department.name === departmentName.value) return true;
-       // Fallback: Check if specialization contains department name (e.g. Cardiologist -> Cardiology)
-       // This is a heuristic.
+       
+       
        return false; 
     });
     
-    // If strict matching fails (maybe API doesn't return department details), 
-    // let's try to match by specialization loosely for demo purposes
+    
+    
     if (doctors.value.length === 0) {
        doctors.value = allDoctors.filter(doc => {
            const spec = (doc.specialization || '').toLowerCase();
            const dept = departmentName.value.toLowerCase();
-           // Simple mapping
+           
            if (dept === 'cardiology' && spec.includes('cardio')) return true;
            if (dept === 'neurology' && spec.includes('neuro')) return true;
            if (dept === 'orthopedics' && spec.includes('ortho')) return true;
@@ -195,8 +193,6 @@ const fetchDoctors = async () => {
   }
 };
 
-
-
 onMounted(() => {
   fetchDoctors();
   if (route.hash) {
@@ -211,7 +207,6 @@ onMounted(() => {
     }
 });
 
-// Refetch if route changes (e.g. navigating from Cardiology to Neurology)
 watch(() => route.params.name, (newName) => {
   fetchDoctors();
   window.scrollTo(0, 0);
@@ -237,8 +232,6 @@ watch(() => route.hash, (newHash) => {
   background-attachment: fixed;
   position: relative;
 }
-
-
 
 .line-clamp-3 {
   display: -webkit-box;

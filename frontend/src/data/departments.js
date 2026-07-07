@@ -2,7 +2,7 @@ export const departmentsData = {
     'Cardiology': {
         title: 'Department of Cardiology',
         tagline: 'Advanced Heart Care with Compassion and Precision',
-        heroImage: 'https://placehold.co/1920x600/e74c3c/ffffff?text=Cardiology+Care',
+        heroImage: '/bg.jpg',
         description: `At LifeSync Hospitals, our Department of Cardiology is dedicated to providing world-class heart care. We utilize state-of-the-art technology and evidence-based treatments to manage a wide spectrum of cardiovascular conditions. From preventive cardiology to complex interventional procedures, our team of renowned cardiologists ensures the best possible outcomes for every patient.`,
         expertise: [
             { title: 'Interventional Cardiology', desc: 'Minimally invasive procedures like angioplasty and stenting.' },
@@ -28,7 +28,7 @@ export const departmentsData = {
     'Neurology': {
         title: 'Department of Neurology',
         tagline: 'Expert Care for Brain, Spine, and Nerve Disorders',
-        heroImage: 'https://placehold.co/1920x600/8e44ad/ffffff?text=Neurology+Excellence',
+        heroImage: '/bg.jpg',
         description: `Our Department of Neurology offers comprehensive diagnosis and treatment for disorders of the nervous system. Whether it's stroke management, epilepsy, or neurodegenerative diseases, our specialists employ the latest diagnostic tools and therapeutic strategies to restore quality of life.`,
         expertise: [
             { title: 'Stroke Management', desc: 'Rapid response and rehabilitation for stroke survivors.' },
@@ -54,7 +54,7 @@ export const departmentsData = {
     'Orthopedics': {
         title: 'Department of Orthopedics',
         tagline: 'Restoring Mobility, Enhancing Life',
-        heroImage: 'https://placehold.co/1920x600/27ae60/ffffff?text=Orthopedic+Care',
+        heroImage: '/bg.jpg',
         description: `The Department of Orthopedics at LifeSync Hospitals is a center of excellence for bone and joint care. We specialize in joint replacements, sports medicine, and trauma care, helping patients regain their mobility and live pain-free lives.`,
         expertise: [
             { title: 'Joint Replacement', desc: 'Total knee and hip replacement surgeries.' },
@@ -80,7 +80,7 @@ export const departmentsData = {
     'Oncology': {
         title: 'Department of Oncology',
         tagline: 'Comprehensive Cancer Care with Hope and Healing',
-        heroImage: 'https://placehold.co/1920x600/d35400/ffffff?text=Oncology+Care',
+        heroImage: '/bg.jpg',
         description: `Our Oncology Department provides holistic cancer care, combining medical, surgical, and radiation oncology. We focus on personalized treatment plans, supportive care, and the latest immunotherapies to fight cancer effectively while maintaining patient quality of life.`,
         expertise: [
             { title: 'Medical Oncology', desc: 'Chemotherapy, immunotherapy, and targeted therapy.' },
@@ -106,7 +106,7 @@ export const departmentsData = {
     'Gynecology': {
         title: 'Department of Gynecology',
         tagline: 'Dedicated to Women’s Health and Wellness',
-        heroImage: 'https://placehold.co/1920x600/e91e63/ffffff?text=Women%27s+Health',
+        heroImage: '/bg.jpg',
         description: `We provide comprehensive care for women at every stage of life. From adolescence to menopause, our Department of Gynecology offers expert services in reproductive health, maternity, and gynecological surgeries.`,
         expertise: [
             { title: 'Maternity Care', desc: 'Prenatal, delivery, and postnatal support.' },
@@ -132,7 +132,7 @@ export const departmentsData = {
     'Pediatrics': {
         title: 'Department of Pediatrics',
         tagline: 'Tender Care for Your Little Ones',
-        heroImage: 'https://placehold.co/1920x600/f1c40f/ffffff?text=Pediatric+Care',
+        heroImage: '/bg.jpg',
         description: `Our Pediatrics Department is designed to provide a child-friendly environment where expert care meets compassion. We handle everything from routine vaccinations to complex pediatric surgeries, ensuring your child grows up healthy and strong.`,
         expertise: [
             { title: 'Neonatology', desc: 'Specialized care for newborns and premature babies.' },
@@ -158,7 +158,7 @@ export const departmentsData = {
     'General Surgery': {
         title: 'Department of General Surgery',
         tagline: 'Precision and Safety in Every Procedure',
-        heroImage: 'https://placehold.co/1920x600/34495e/ffffff?text=General+Surgery',
+        heroImage: '/bg.jpg',
         description: `The Department of General Surgery focuses on abdominal contents including esophagus, stomach, small bowel, colon, liver, pancreas, gallbladder, appendix and bile ducts, and often the thyroid gland. We use advanced laparoscopic techniques to minimize pain and recovery time.`,
         expertise: [
             { title: 'Laparoscopic Surgery', desc: 'Minimally invasive abdominal surgeries.' },
@@ -184,7 +184,7 @@ export const departmentsData = {
     'General Medicine': {
         title: 'Department of General Medicine',
         tagline: 'Your First Step to Comprehensive Health',
-        heroImage: 'https://placehold.co/1920x600/2980b9/ffffff?text=General+Medicine',
+        heroImage: '/bg.jpg',
         description: `Our General Medicine department is the backbone of the hospital, dealing with the prevention, diagnosis, and non-surgical treatment of adult diseases. We manage acute and chronic illnesses, providing holistic care for patients with multi-system disorders.`,
         expertise: [
             { title: 'Infectious Diseases', desc: 'Management of viral, bacterial, and parasitic infections.' },
